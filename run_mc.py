@@ -36,6 +36,8 @@ mc_params.set_anisotropy(10.)
 # flag to indicate whether special z - edge features are computed
 # set to false for isotropic data (default value)
 mc_params.set_use2d(False)
+# Threads
+mc_params.set_nthreads(20)
 
 # list of features taken into account
 # "raw" -> filters on raw data accumulated over the edges
@@ -47,18 +49,27 @@ feat_list = ("raw", "prob", "reg", "topo")
 mc_nodes, mc_edges, mc_energy, t_inf = multicut_workflow(
     ds_train, ds_test,
     seg_id, seg_id,
-    feat_list, mc_params)
+    feat_list, mc_params
+)
 # mc_nodes = result for the segments
 # mc_edges = result for the edges
 # mc_energy = energy of the solution
 # t_inf = time the inference of the mc took
+mc_nodes_train, mc_edges_train, mc_energy_train, t_inf_train = multicut_workflow(
+    ds_train, ds_train,
+    seg_id, seg_id,
+    feat_list, mc_params
+)
 
 # project the result back to the volume
 mc_seg = ds_test.project_mc_result(seg_id, mc_nodes)
+mc_seg_train = ds_train.project_mc_result(seg_id, mc_nodes_train)
 # merge small segments
 mc_seg = merge_small_segments(mc_seg, 100)
+mc_seg_train = merge_small_segments(mc_seg_train, 100)
 
-vigra.writeHDF5(mc_seg, cache_folder + 'result.h5', 'z/1/data')
+vigra.writeHDF5(mc_seg, cache_folder + 'result.h5', 'z/1/test')
+vigra.writeHDF5(mc_seg_train, cache_folder + 'result.h5', 'z/0/train')
 
 
 

@@ -21,9 +21,9 @@ probs_key_train = 'z/0/data'
 probs_key_test = 'z/1/data'
 
 seg_path = '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/'
-seg_file = 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
-seg_key_train = 'z/0/beta_0.3'
-seg_key_test = 'z/1/beta_0.3'
+seg_file = 'cremi.splB.train.wsdt.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+seg_key_train = 'z/0/labels'
+seg_key_test = 'z/1/labels'
 
 gt_path = '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/'
 gt_file = 'cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
