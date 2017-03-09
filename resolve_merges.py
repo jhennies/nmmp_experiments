@@ -163,7 +163,8 @@ mc_params.set_nthreads(20)
 # Path feature parameters
 pf_params = PathFeatureParams(
     feat_list_file=feature_image_path + 'featlist.pkl',
-    experiment_key='z_train0_predict1'
+    experiment_key='z_train0_predict1',
+    max_threads=32
 )
 
 # Path computation parameters
