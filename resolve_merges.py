@@ -7,7 +7,7 @@ from multicut_src import ExperimentSettings
 from find_false_merges_src import load_false_merges
 from find_false_merges_src import FeatureImages
 from find_false_merges_src import FeatureImageParams, SegFeatureImageParams
-from find_false_merges_src import PathFeatureParams, PathsParams
+from find_false_merges_src import PathFeatureParams, PathsParams, ClassifierParams
 
 import numpy as np
 import vigra
@@ -169,12 +169,17 @@ pf_params = PathFeatureParams(
 
 # Path computation parameters
 path_params = PathsParams()
+# Random forest parameters
+classifier_params = ClassifierParams(
+    classifier_file='/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/find_merges_cache/randomforest.pkl',
+    classifier_key='z_train0_predict1'
+)
 
 # TODO: resolve false merges using a second Multi-cut
 resolve_merges_with_lifted_edges(
     ds_test, false_merge_ids, false_paths, path_classifier,
     feature_images, mc_seg, edge_probs, mc_params,
-    pf_params, path_params
+    pf_params, path_params, classifier_params
 )
 
 # # TODO: Load the initial Multi-cut computed in run_mc
