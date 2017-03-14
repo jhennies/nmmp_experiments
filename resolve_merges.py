@@ -1,39 +1,84 @@
 
-from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
+from multicut_src import compute_false_merges, ComputeFalseMergesParams
 from multicut_src import MetaSet
 from multicut_src import DataSet
-from multicut_src import PipelineParameters
+# from multicut_src import PipelineParameters
 from multicut_src import ExperimentSettings
-from find_false_merges_src import load_false_merges
-from find_false_merges_src import FeatureImages
-from find_false_merges_src import FeatureImageParams, SegFeatureImageParams
-from find_false_merges_src import PathFeatureParams, PathsParams, ClassifierParams
+# from find_false_merges_src import load_false_merges
+# from find_false_merges_src import FeatureImages
+# from find_false_merges_src import FeatureImageParams, SegFeatureImageParams
+# from find_false_merges_src import PathFeatureParams, PathsParams, ClassifierParams
 
 import numpy as np
 import vigra
 import os
 
-# TODO: Load a multicut segmentation
+# Load a multicut segmentation (test set)
 mc_source_path = '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/'
 mc_source_file = 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
 mc_source_hdf5path = 'z/1/beta_0.5'
-mc_seg = vigra.readHDF5('/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/result.h5', 'z/1/test')
+mc_seg_test = vigra.readHDF5('/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/result.h5', 'z/1/test')
 
-# TODO: Load a previously initialized test dataset
+# Load a previously initialized test dataset
 cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/'
 meta = MetaSet(cache_folder)
 meta.load()
 ds_test = meta.get_dataset('ds_test')
 
-# # TODO: Compute the false merges
-# false_merge_ids, false_paths, path_classifier = compute_false_merges(
-#     ds_train, ds_test,
-#     mc_seg_train, mc_seg_test,
-#     params
-# )
+# Multicut segmentation paths (training data for false merge candidate detection)
+mc_segs_train_paths = [
+    '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+] * 5
+mc_seg_train_internal_paths = [
+    ['z/0/beta_0.3', 'z/0/beta_0.35', 'z/0/beta_0.4', 'z/0/beta_0.45', 'z/0/beta_0.5', 'z/0/beta_0.55', 'z/0/beta_0.6', 'z/0/beta_0.65', 'z/0/beta_0.7']
+]
+# FIXME: Put this into compute_false_merges() ?
+mc_seg_train = []
+for id_x, betas in enumerate(mc_seg_train_internal_paths):
+    path = mc_segs_train_paths[id_x]
+    print 'Loading from file: {}'.format(path)
+    mc_seg_train.append([])
+    for id_y, beta in enumerate(betas):
+        print 'Loading internal path = {}'.format(beta)
+        mc_seg_train[id_x].append(vigra.readHDF5(path, beta))
 
-# TODO: Or load false merges
-false_merge_ids, false_paths, path_classifier = load_false_merges()
+# TODO: Load train datasets: for each source
+train_raw_sources = [
+    '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+]
+train_raw_sources_keys = [
+    'z/0/raw'
+]
+train_probs_sources = [
+    '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.probs.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+]
+train_probs_sources_keys = [
+    'z/0/data'
+]
+ds_train = []
+for id_source, raw_source in enumerate(train_raw_sources):
+    ds_train.append(
+        DataSet(
+            cache_folder, 'ds_train_{}'.format(id_source)
+        )
+    )
+    ds_train[-1].add_raw(raw_source, train_raw_sources_keys[id_source])
+    ds_train[-1].add_input(train_probs_sources[id_source], train_probs_sources_keys[id_source])
+
+# Merge candidate detection parameters
+from false_merges import RemoveSmallObjectsParams
+# FIXME: This parameter stucture doesn't work: Use simpler structure without sub-class
+params = ComputeFalseMergesParams(remove_small_objects=RemoveSmallObjectsParams(max_threads=20))
+
+# TODO: Compute the false merges
+false_merge_ids, false_paths, path_classifier = compute_false_merges(
+    ds_train, ds_test,
+    mc_seg_train, mc_seg_test,
+    params
+)
+
+# # TODO: Or load false merges
+# false_merge_ids, false_paths, path_classifier = load_false_merges()
 # TODO: Development: Some dummy ids
 # import random
 mc_seg_labels = np.unique(mc_seg)
@@ -76,77 +121,6 @@ feature_images = {
         params=FeatureImageParams()
     )
 }
-# feature_images = {
-#     'segmentation': FeatureImages(
-#         filepath=feature_image_path + feature_image_files[0],
-#         source_filepath=source_path + source_files[0],
-#         source_internal_path='z/1/beta_0.5/',
-#         internal_path='z/1/beta_0.5/',
-#         params=SegFeatureImageParams(
-#             feature_list={
-#                 'disttransf': {
-#                     'params': None, 'func': 'disttransf',
-#                     'raw': None,
-#                     'gauss_2': {'params': [2], 'func': 'gaussian'},
-#                     'gauss_5': {'params': [5], 'func': 'gaussian'},
-#                     'gauss_10': {'params': [10], 'func': 'gaussian'},
-#                     'mag_1': {'params': [1], 'func': 'gaussian_gradient_magnitude'},
-#                     'mag_5': {'params': [5], 'func': 'gaussian_gradient_magnitude'},
-#                     'mag_10': {'params': [10], 'func': 'gaussian_gradient_magnitude'},
-#                     'lapl_1': {'params': [1], 'func': 'laplacian_of_gaussian'},
-#                     'lapl_5': {'params': [5], 'func': 'laplacian_of_gaussian'},
-#                     'lapl_10': {'params': [10], 'func': 'laplacian_of_gaussian'}
-#                 }
-#             }
-#         )
-#     ),
-#     'rawdata': FeatureImages(
-#         filepath=feature_image_path + feature_image_files[1],
-#         source_filepath=source_path + source_files[1],
-#         source_internal_path='z/1/raw',
-#         internal_path='z/1/',
-#         params=FeatureImageParams(
-#             feature_list={
-#                 'disttransf': {
-#                     'params': None, 'func': 'disttransf',
-#                     'raw': None,
-#                     'gauss_2': {'params': [2], 'func': 'gaussian'},
-#                     'gauss_5': {'params': [5], 'func': 'gaussian'},
-#                     'gauss_10': {'params': [10], 'func': 'gaussian'},
-#                     'mag_1': {'params': [1], 'func': 'gaussian_gradient_magnitude'},
-#                     'mag_5': {'params': [5], 'func': 'gaussian_gradient_magnitude'},
-#                     'mag_10': {'params': [10], 'func': 'gaussian_gradient_magnitude'},
-#                     'lapl_1': {'params': [1], 'func': 'laplacian_of_gaussian'},
-#                     'lapl_5': {'params': [5], 'func': 'laplacian_of_gaussian'},
-#                     'lapl_10': {'params': [10], 'func': 'laplacian_of_gaussian'}
-#                 }
-#             }
-#         )
-#     ),
-#     'probs': FeatureImages(
-#         filepath=feature_image_path + feature_image_files[2],
-#         source_filepath=source_path + source_files[2],
-#         source_internal_path='z/1/data',
-#         internal_path='z/1/',
-#         params=FeatureImageParams(
-#             feature_list={
-#                 'disttransf': {
-#                     'params': None, 'func': 'disttransf',
-#                     'raw': None,
-#                     'gauss_2': {'params': [2], 'func': 'gaussian'},
-#                     'gauss_5': {'params': [5], 'func': 'gaussian'},
-#                     'gauss_10': {'params': [10], 'func': 'gaussian'},
-#                     'mag_1': {'params': [1], 'func': 'gaussian_gradient_magnitude'},
-#                     'mag_5': {'params': [5], 'func': 'gaussian_gradient_magnitude'},
-#                     'mag_10': {'params': [10], 'func': 'gaussian_gradient_magnitude'},
-#                     'lapl_1': {'params': [1], 'func': 'laplacian_of_gaussian'},
-#                     'lapl_5': {'params': [5], 'func': 'laplacian_of_gaussian'},
-#                     'lapl_10': {'params': [10], 'func': 'laplacian_of_gaussian'}
-#                 }
-#             }
-#         )
-#     )
-# }
 
 # TODO: Get edge probabilies of previous multicut
 # TODO: Am I supposed to load them from here?
@@ -178,7 +152,7 @@ classifier_params = ClassifierParams(
 # TODO: resolve false merges using a second Multi-cut
 resolve_merges_with_lifted_edges(
     ds_test, false_merge_ids, false_paths, path_classifier,
-    feature_images, mc_seg, edge_probs, mc_params,
+    feature_images, mc_seg_test, edge_probs, mc_params,
     pf_params, path_params, classifier_params
 )
 
