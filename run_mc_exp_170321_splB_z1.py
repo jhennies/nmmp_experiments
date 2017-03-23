@@ -8,7 +8,7 @@ from multicut_src import merge_small_segments
 import os
 import vigra
 
-cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170323_splB_z1_with_lifted/cache/'
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170321_splB_z1/cache/'
 meta = MetaSet(cache_folder)
 
 meta.load()
@@ -38,12 +38,12 @@ mc_params.set_anisotropy(10.)
 mc_params.set_use2d(False)
 # Threads
 mc_params.set_nthreads(20)
-# Solver
-mc_params.set_solver("opengm_fusionmoves")
-mc_params.set_verbose(True)
-mc_params.set_weighting_scheme("z")
-# For a lifted neighborhood
-mc_params.set_lifted_neighborhood(3)
+# # Solver
+# mc_params.set_solver("opengm_fusionmoves")
+# mc_params.set_verbose(True)
+# mc_params.set_weighting_scheme("z")
+# # For a lifted neighborhood
+# mc_params.set_lifted_neighborhood(3)
 
 # list of features taken into account
 # "raw" -> filters on raw data accumulated over the edges

@@ -7,7 +7,7 @@ from multicut_src import MetaSet
 from multicut_src import DataSet
 
 # Cache folder for training and test datasets
-cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170321_splB_z1/cache/'
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170323_splB_z1_with_lifted/cache/'
 
 # Other sources
 raw_path = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'

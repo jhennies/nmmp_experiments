@@ -17,7 +17,8 @@ import os
 mc_source_path = '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/'
 mc_source_file = 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
 mc_source_hdf5path = 'z/1/beta_0.5'
-mc_seg_test = vigra.readHDF5('/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/result.h5', 'z/1/test')
+mc_seg_test = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/result.h5'
+mc_seg_test_key = 'z/1/test'
 
 # Load a previously initialized test dataset
 cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/'
@@ -27,20 +28,18 @@ ds_test = meta.get_dataset('ds_test')
 
 # Multicut segmentation paths (training data for false merge candidate detection)
 mc_segs_train_paths = [
-    '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
-] * 5
-mc_seg_train_internal_paths = [
-    ['z/0/beta_0.3', 'z/0/beta_0.35', 'z/0/beta_0.4', 'z/0/beta_0.45', 'z/0/beta_0.5', 'z/0/beta_0.55', 'z/0/beta_0.6', 'z/0/beta_0.65', 'z/0/beta_0.7']
+    ['/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 2
 ]
-# FIXME: Put this into compute_false_merges() ?
-mc_seg_train = []
-for id_x, betas in enumerate(mc_seg_train_internal_paths):
-    path = mc_segs_train_paths[id_x]
-    print 'Loading from file: {}'.format(path)
-    mc_seg_train.append([])
-    for id_y, beta in enumerate(betas):
-        print 'Loading internal path = {}'.format(beta)
-        mc_seg_train[id_x].append(vigra.readHDF5(path, beta))
+mc_segs_train_keys = [
+    ['z/0/beta_0.5', 'z/0/beta_0.45'] #, 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
+] * len(mc_segs_train_paths)
+
+gtruths_paths = [
+    '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+]
+gtruths_keys = [
+    'z/0/neuron_ids'
+]
 
 # TODO: Load train datasets: for each source
 train_raw_sources = [
@@ -55,26 +54,34 @@ train_probs_sources = [
 train_probs_sources_keys = [
     'z/0/data'
 ]
-ds_train = []
+trainsets = []
 for id_source, raw_source in enumerate(train_raw_sources):
-    ds_train.append(
+    trainsets.append(
         DataSet(
             cache_folder, 'ds_train_{}'.format(id_source)
         )
     )
-    ds_train[-1].add_raw(raw_source, train_raw_sources_keys[id_source])
-    ds_train[-1].add_input(train_probs_sources[id_source], train_probs_sources_keys[id_source])
+    trainsets[-1].add_raw(raw_source, train_raw_sources_keys[id_source])
+    trainsets[-1].add_input(train_probs_sources[id_source], train_probs_sources_keys[id_source])
+
+# TODO: Add ground into dataset
 
 # Merge candidate detection parameters
 from false_merges import RemoveSmallObjectsParams
 # FIXME: This parameter stucture doesn't work: Use simpler structure without sub-class
 params = ComputeFalseMergesParams(remove_small_objects=RemoveSmallObjectsParams(max_threads=20))
 
-# TODO: Compute the false merges
+# TODO: Compute the false merge
 false_merge_ids, false_paths, path_classifier = compute_false_merges(
-    ds_train, ds_test,
-    mc_seg_train, mc_seg_test,
-    params
+    trainsets,  # list of datasets with training data
+    ds_test,  # one dataset -> predict the false merged objects
+    mc_segs_train_paths,  # list with paths to segmentations (len(mc_segs_train) == len(trainsets))
+    mc_segs_train_keys,
+    mc_seg_test,
+    mc_seg_test_key,
+    gtruths_paths,
+    gtruths_keys,
+    params=ComputeFalseMergesParams()
 )
 
 # # TODO: Or load false merges
