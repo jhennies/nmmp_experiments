@@ -132,7 +132,7 @@ def find_false_merges(ds_str):
 def resolve_false_merges(exp_params):
     meta = MetaSet(cache_folder)
     meta.load()
-    ds = meta.get_dataset('ds_test')
+    ds = meta.get_dataset('splB_z1')
     with open(cache_folder + 'path_data/paths.pkl') as f:
         paths = pickle.load(f)
     with open(cache_folder + '/path_data/false_paths_predictions.pkl') as f:
@@ -160,8 +160,7 @@ def resolve_false_merges(exp_params):
     # mc_weights_path = '/home/constantin/Work/home_hdd/cache/cremi/sample_A_train/probs_to_energies_0_-8166828587302537792.h5'
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
-    mc_weights = vigra.readHDF5(cache_folder + "rf_cache/pred_ds_train_0/prediction_ds_train_0_ds_test_0_('raw', 'prob', 'reg', 'topo')_10.0_False_False_500_0.4_0.6_False_True", "data")
-
+    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_-5335594407355684218.h5", "data")
     with open(rf_path) as f:
         path_rf = pickle.load(f)
 
