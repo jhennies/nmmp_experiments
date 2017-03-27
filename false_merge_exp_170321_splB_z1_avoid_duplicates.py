@@ -21,6 +21,9 @@ from multicut_src import ExperimentSettings
 from multicut_src import MetaSet
 from multicut_src import DataSet
 
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170321_splB_z1_avoid_duplicates/cache/'
+
+
 def find_false_merges(ds_str):
 
     cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170321_splB_z1_avoid_duplicates/cache/'
@@ -127,7 +130,6 @@ def find_false_merges(ds_str):
 
 
 def resolve_false_merges(exp_params):
-    cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/'
     meta = MetaSet(cache_folder)
     meta.load()
     ds = meta.get_dataset('ds_test')
@@ -154,11 +156,11 @@ def resolve_false_merges(exp_params):
         sorted_id += 1
 
     rf_path = cache_folder + 'rf_cache/path_rfs/rf_merges_ds_train_0.pkl'
-    test_seg = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/result.h5'
+    test_seg = cache_folder + '../result.h5'
     # mc_weights_path = '/home/constantin/Work/home_hdd/cache/cremi/sample_A_train/probs_to_energies_0_-8166828587302537792.h5'
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
-    mc_weights = vigra.readHDF5("/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/rf_cache/pred_ds_train_0/prediction_ds_train_0_ds_test_0_('raw', 'prob', 'reg', 'topo')_10.0_False_False_500_0.4_0.6_False_True", "data")
+    mc_weights = vigra.readHDF5(cache_folder + "rf_cache/pred_ds_train_0/prediction_ds_train_0_ds_test_0_('raw', 'prob', 'reg', 'topo')_10.0_False_False_500_0.4_0.6_False_True", "data")
 
     with open(rf_path) as f:
         path_rf = pickle.load(f)
