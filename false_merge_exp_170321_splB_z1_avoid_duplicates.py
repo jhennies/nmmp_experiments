@@ -204,7 +204,6 @@ if __name__ == '__main__':
 
     # 2.) resolve the objs classified as false merges
     # parameters for the Multicut
-    cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/'
     meta = MetaSet(cache_folder)
     mc_params = ExperimentSettings()
     rfcache = os.path.join(meta.meta_folder, "rf_cache")
