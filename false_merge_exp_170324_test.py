@@ -4,6 +4,10 @@ import numpy as np
 import cPickle as pickle
 import time
 
+import sys
+sys.path.append(
+    '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+
 from multicut_src import shortest_paths, path_feature_aggregator
 from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
 from multicut_src import project_resolved_objects_to_segmentation
@@ -56,13 +60,13 @@ def find_false_merges(ds_str):
     train_segs = [
         ['/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
     ]
-    test_seg = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/result.h5'
+    test_seg = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/result.h5'
 
     train_keys = [
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
     ] * 1
     test_key = 'z/1/test'
-    rf_save_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/rf_cache/path_rfs'
+    rf_save_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/cache/rf_cache/path_rfs'
 
     paths_save_folder = cache_folder + 'path_data/'
 
@@ -121,7 +125,7 @@ def resolve_false_merges(exp_params):
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
     # TODO change here
-    mc_weights = vigra.readHDF5(cache_folder + "rf_cache/ds_test/probs_to_energies_0_-5335594407355684218.h5", "data")
+    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_-8253534030504177908.h5", "data")
 
     with open(rf_path) as f:
         path_rf = pickle.load(f)
@@ -143,7 +147,7 @@ def project_new_segmentation():
     cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/cache/'
     meta = MetaSet(cache_folder)
     meta.load()
-    ds = meta.get_dataset('ds_test')
+    ds = meta.get_dataset('splB_z1')
     test_seg = cache_folder + '../result.h5'
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
     with open(cache_folder + 'path_data/new_noes.pkl') as f:
@@ -161,7 +165,7 @@ def project_new_segmentation():
 if __name__ == '__main__':
 
     # 1.) find false merge objects
-    find_false_merges('ds_test')
+    find_false_merges('splB_z1')
 
     # 2.) resolve the objs classified as false merges
     # parameters for the Multicut

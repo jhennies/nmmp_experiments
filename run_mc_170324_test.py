@@ -47,8 +47,8 @@ mc_params.set_nthreads(20)
 # mc_params.set_solver("opengm_fusionmoves")
 # mc_params.set_verbose(True)
 mc_params.set_weighting_scheme("z")
-# For a lifted neighborhood
-mc_params.set_lifted_neighborhood(3)
+# # For a lifted neighborhood
+# mc_params.set_lifted_neighborhood(3)
 
 # list of features taken into account
 # "raw" -> filters on raw data accumulated over the edges
@@ -56,20 +56,37 @@ mc_params.set_lifted_neighborhood(3)
 # "reg" -> region statistics, mapped to the edges
 # "topo" -> topology features for the edges
 feat_list = ("raw", "prob", "reg", "topo")
+# lifted_feat_list = ['reg', 'cluster']
+#
+# mc_nodes, mc_edges, mc_energy, t_inf = lifted_multicut_workflow(
+#     ds_train, ds_test,
+#     seg_id, seg_id,
+#     feat_list, lifted_feat_list,
+#     mc_params
+# )
 
 mc_nodes, mc_edges, mc_energy, t_inf = multicut_workflow(
     ds_train, ds_test,
     seg_id, seg_id,
-    feat_list, mc_params
+    feat_list,
+    mc_params
 )
+
 # mc_nodes = result for the segments
 # mc_edges = result for the edges
 # mc_energy = energy of the solution
 # t_inf = time the inference of the mc took
+# mc_nodes_train, mc_edges_train, mc_energy_train, t_inf_train = lifted_multicut_workflow(
+#     ds_train, ds_train,
+#     seg_id, seg_id,
+#     feat_list, mc_params
+# )
+
 mc_nodes_train, mc_edges_train, mc_energy_train, t_inf_train = multicut_workflow(
     ds_train, ds_train,
     seg_id, seg_id,
-    feat_list, mc_params
+    feat_list,
+    mc_params
 )
 
 # project the result back to the volume

@@ -1,15 +1,19 @@
 
+import sys
+
+sys.path.append(
+    '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+
 from multicut_src import MetaSet
 from multicut_src import DataSet
 from multicut_src import multicut_workflow
 from multicut_src import ExperimentSettings
 from multicut_src import merge_small_segments
-from multicut_src import lifted_multicut_workflow
 
 import os
 import vigra
 
-cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170323_splB_z1_with_lifted/cache/'
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_splB_z1_avoid_duplicates/cache/'
 meta = MetaSet(cache_folder)
 
 meta.load()
@@ -40,8 +44,8 @@ mc_params.set_use2d(False)
 # Threads
 mc_params.set_nthreads(20)
 # Solver
-mc_params.set_solver("opengm_fusionmoves")
-mc_params.set_verbose(True)
+# mc_params.set_solver("opengm_fusionmoves")
+# mc_params.set_verbose(True)
 mc_params.set_weighting_scheme("z")
 # For a lifted neighborhood
 mc_params.set_lifted_neighborhood(3)
@@ -52,21 +56,39 @@ mc_params.set_lifted_neighborhood(3)
 # "reg" -> region statistics, mapped to the edges
 # "topo" -> topology features for the edges
 feat_list = ("raw", "prob", "reg", "topo")
+# lifted_feat_list = ['reg', 'cluster']
+#
+# mc_nodes, mc_edges, mc_energy, t_inf = lifted_multicut_workflow(
+#     ds_train, ds_test,
+#     seg_id, seg_id,
+#     feat_list, lifted_feat_list,
+#     mc_params
+# )
 
 mc_nodes, mc_edges, mc_energy, t_inf = multicut_workflow(
     ds_train, ds_test,
     seg_id, seg_id,
-    feat_list, mc_params
+    feat_list,
+    mc_params
 )
+
 # mc_nodes = result for the segments
 # mc_edges = result for the edges
 # mc_energy = energy of the solution
 # t_inf = time the inference of the mc took
+# mc_nodes_train, mc_edges_train, mc_energy_train, t_inf_train = lifted_multicut_workflow(
+#     ds_train, ds_train,
+#     seg_id, seg_id,
+#     feat_list, mc_params
+# )
+
 mc_nodes_train, mc_edges_train, mc_energy_train, t_inf_train = multicut_workflow(
     ds_train, ds_train,
     seg_id, seg_id,
-    feat_list, mc_params
+    feat_list,
+    mc_params
 )
+
 
 # project the result back to the volume
 mc_seg = ds_test.project_mc_result(seg_id, mc_nodes)
