@@ -13,7 +13,6 @@ from multicut_src import shortest_paths, path_feature_aggregator
 from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
 from multicut_src import project_resolved_objects_to_segmentation
 from multicut_src import ExperimentSettings
-from multicut_src import ComputeFalseMergesParams
 
 # hack to get in meta
 # import sys
@@ -164,11 +163,15 @@ def resolve_false_merges(exp_params):
     with open(rf_path) as f:
         path_rf = pickle.load(f)
 
-    new_node_labels = resolve_merges_with_lifted_edges(ds, 0,
-            false_paths, path_rf,
-            mc_seg, mc_weights,
-            exp_params
-            )
+    export_paths_path = cache_folder + 'path_data/'
+
+    new_node_labels = resolve_merges_with_lifted_edges(
+        ds, 0,
+        false_paths, path_rf,
+        mc_seg, mc_weights,
+        exp_params,
+        export_paths_path=export_paths_path
+    )
     with open(cache_folder + 'path_data/new_noes.pkl', 'w') as f:
         pickle.dump(new_node_labels, f)
 
@@ -194,29 +197,29 @@ def project_new_segmentation():
 
 if __name__ == '__main__':
 
-    # 1.) find false merge objects
-    find_false_merges('splB_z1')
+    # # 1.) find false merge objects
+    # find_false_merges('splB_z1')
 
-    # # 2.) resolve the objs classified as false merges
-    # # parameters for the Multicut
-    # cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/'
-    # meta = MetaSet(cache_folder)
-    # mc_params = ExperimentSettings()
-    # rfcache = os.path.join(meta.meta_folder, "rf_cache")
-    # mc_params.set_rfcache(rfcache)
-    #
-    # mc_params.set_anisotropy(10.)
-    # mc_params.set_use2d(True)
-    #
-    # mc_params.set_nthreads(30)
-    #
-    # mc_params.set_ntrees(500)
-    # mc_params.set_solver("nifty_fusionmoves")
-    # mc_params.set_verbose(True)
-    # mc_params.set_weighting_scheme("z")
-    #
-    # mc_params.set_lifted_neighborhood(3)
-    # resolve_false_merges(mc_params)
+    # 2.) resolve the objs classified as false merges
+    # parameters for the Multicut
+    cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170224_test/cache/'
+    meta = MetaSet(cache_folder)
+    mc_params = ExperimentSettings()
+    rfcache = os.path.join(meta.meta_folder, "rf_cache")
+    mc_params.set_rfcache(rfcache)
+
+    mc_params.set_anisotropy(10.)
+    mc_params.set_use2d(True)
+
+    mc_params.set_nthreads(30)
+
+    mc_params.set_ntrees(500)
+    mc_params.set_solver("nifty_fusionmoves")
+    mc_params.set_verbose(True)
+    mc_params.set_weighting_scheme("z")
+
+    mc_params.set_lifted_neighborhood(3)
+    resolve_false_merges(mc_params)
 
     # # 3.) project the resolved result to segmentation
     # project_new_segmentation()
