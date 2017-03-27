@@ -133,12 +133,12 @@ def resolve_false_merges(exp_params):
     meta = MetaSet(cache_folder)
     meta.load()
     ds = meta.get_dataset('splB_z1')
-    with open(cache_folder + 'path_data/paths.pkl') as f:
-        paths = pickle.load(f)
+    with open(cache_folder + 'path_data/path_ds_train_false_merge_0_ds_train_false_merge_1_ds_train_false_merge_2_ds_train_false_merge_3_ds_train_false_merge_4.pkl') as f:
+        path_data = pickle.load(f)
+    paths = path_data['paths']
+    paths_to_objs = path_data['paths_to_objs']
     with open(cache_folder + '/path_data/false_paths_predictions.pkl') as f:
         false_merge_probs = pickle.load(f)
-    with open(cache_folder + '/path_data/paths_to_objs.pkl') as f:
-        paths_to_objs = pickle.load(f)
 
     # unmerge the 2 objs with highest false merge probability paths
     sorted_indices = np.argsort(false_merge_probs)[::-1]
