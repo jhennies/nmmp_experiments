@@ -33,22 +33,46 @@ def find_false_merges(ds_str):
 
     # Load train datasets: for each source
     train_raw_sources = [
-        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5'
     ]
     train_raw_sources_keys = [
-        'z/0/raw'
+        'z/0/raw',
+        'z/1/raw',
+        'z/0/raw',
+        'z/0/raw',
+        'z/1/raw'
     ]
     train_probs_sources = [
-        source_folder + 'cremi.splB.train.probs.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splA.train.probs.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splA.train.probs.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splB.train.probs.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splC.train.probs.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splC.train.probs.crop.axes_xyz.split_z.h5'
     ]
     train_probs_sources_keys = [
-        'z/0/data'
+        'z/0/data',
+        'z/1/data',
+        'z/0/data',
+        'z/0/data',
+        'z/1/data'
     ]
     gtruths_paths = [
-        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5',
+        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5'
     ]
     gtruths_keys = [
-        'z/0/neuron_ids'
+        'z/0/neuron_ids',
+        'z/1/neuron_ids',
+        'z/0/neuron_ids',
+        'z/0/neuron_ids',
+        'z/1/neuron_ids'
     ]
     trainsets = []
     for id_source, raw_source in enumerate(train_raw_sources):
