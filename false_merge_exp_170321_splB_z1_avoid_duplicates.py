@@ -62,13 +62,17 @@ def find_false_merges(ds_str):
         trainsets[-1].add_gt(gtruths_paths[id_source], gtruths_keys[id_source])
 
     train_segs = [
-        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9
+        ['/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/cremi.splA.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9,
+        ['/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/cremi.splA.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9,
+        ['/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9,
+        ['/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/cremi.splC.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9,
+        ['/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/cremi.splC.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9
     ]
-    test_seg = cache_folder + '../result.h5'
+    test_seg = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170321_splB_z1/result.h5'
 
     train_keys = [
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
-    ] * 1
+    ] * 5
     test_key = 'z/1/test'
     rf_save_folder = cache_folder + 'rf_cache/path_rfs'
 
