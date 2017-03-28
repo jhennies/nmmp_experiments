@@ -20,9 +20,7 @@ from multicut_src import ExperimentSettings
 from multicut_src import MetaSet
 from multicut_src import DataSet
 
-
-cache_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170324_test_recompute/cache/'
-
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_splB_z1_avoid_duplicates/cache/'
 
 def find_false_merges(ds_str):
 
@@ -126,8 +124,7 @@ def resolve_false_merges(exp_params):
     # mc_weights_path = '/home/constantin/Work/home_hdd/cache/cremi/sample_A_train/probs_to_energies_0_-8166828587302537792.h5'
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
-    # TODO change here
-    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_-8253534030504177908.h5", "data")
+    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_7098259014394751231.h5", "data")
 
     with open(rf_path) as f:
         path_rf = pickle.load(f)
@@ -168,30 +165,30 @@ if __name__ == '__main__':
     # 1.) find false merge objects
     find_false_merges('splB_z1')
 
-    # 2.) resolve the objs classified as false merges
-    # parameters for the Multicut
-    meta = MetaSet(cache_folder)
-    mc_params = ExperimentSettings()
-    rfcache = os.path.join(meta.meta_folder, "rf_cache")
-    mc_params.set_rfcache(rfcache)
-
-    mc_params.set_anisotropy(10.)
-    mc_params.set_use2d(False)
-
-    mc_params.set_nthreads(30)
-
-    mc_params.set_ntrees(500)
-
-    # mc_params.set_solver("nifty_fusionmoves")
-    # mc_params.set_verbose(True)
-    mc_params.set_weighting_scheme("z")
-
-    mc_params.set_lifted_neighborhood(3)
-
-    mc_params.min_nh_range = 5
-    mc_params.max_sample_size = 20
-
-    resolve_false_merges(mc_params)
-
-    # 3.) project the resolved result to segmentation
-    project_new_segmentation()
+    # # 2.) resolve the objs classified as false merges
+    # # parameters for the Multicut
+    # meta = MetaSet(cache_folder)
+    # mc_params = ExperimentSettings()
+    # rfcache = os.path.join(meta.meta_folder, "rf_cache")
+    # mc_params.set_rfcache(rfcache)
+    #
+    # mc_params.set_anisotropy(10.)
+    # mc_params.set_use2d(False)
+    #
+    # mc_params.set_nthreads(30)
+    #
+    # mc_params.set_ntrees(500)
+    #
+    # # mc_params.set_solver("nifty_fusionmoves")
+    # # mc_params.set_verbose(True)
+    # mc_params.set_weighting_scheme("z")
+    #
+    # mc_params.set_lifted_neighborhood(3)
+    #
+    # mc_params.min_nh_range = 5
+    # mc_params.max_sample_size = 20
+    #
+    # resolve_false_merges(mc_params)
+    #
+    # # 3.) project the resolved result to segmentation
+    # project_new_segmentation()

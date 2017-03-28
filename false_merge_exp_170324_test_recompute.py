@@ -5,8 +5,8 @@ import cPickle as pickle
 import time
 
 import sys
-sys.path.append(
-    '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+# sys.path.append(
+#     '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
 
 from multicut_src import shortest_paths, path_feature_aggregator
 from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
@@ -22,6 +22,7 @@ from multicut_src import DataSet
 
 
 cache_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170324_test_recompute/cache/'
+source_folder = '/media/julian/Daten/datasets/cremi_2016/resolve_merges/'
 
 
 def find_false_merges(ds_str):
@@ -32,19 +33,19 @@ def find_false_merges(ds_str):
 
     # Load train datasets: for each source
     train_raw_sources = [
-        '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+        source_folder + 'cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
     ]
     train_raw_sources_keys = [
         'z/0/raw'
     ]
     train_probs_sources = [
-        '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.probs.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+        source_folder + 'cremi.splB.train.probs.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
     ]
     train_probs_sources_keys = [
         'z/0/data'
     ]
     gtruths_paths = [
-        '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+        source_folder + 'cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
     ]
     gtruths_keys = [
         'z/0/neuron_ids'
@@ -61,17 +62,20 @@ def find_false_merges(ds_str):
         trainsets[-1].add_gt(gtruths_paths[id_source], gtruths_keys[id_source])
 
     train_segs = [
-        ['/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
+        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
     ]
-    test_seg = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/result.h5'
+    test_seg = cache_folder + '../result.h5'
 
     train_keys = [
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
     ] * 1
     test_key = 'z/1/test'
-    rf_save_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/cache/rf_cache/path_rfs'
+    rf_save_folder = cache_folder + 'rf_cache/path_rfs'
 
     paths_save_folder = cache_folder + 'path_data/'
+
+    params = ExperimentSettings()
+    params.set_anisotropy(10.)
 
     paths, false_merge_probs, path_to_objs = compute_false_merges(
         trainsets,
@@ -82,7 +86,7 @@ def find_false_merges(ds_str):
         test_key,
         rf_save_folder,
         paths_save_folder=paths_save_folder,
-        params=ExperimentSettings()
+        params=params
     )
     print "Succesfully computed false mereg probabilities for", len(false_merge_probs), "paths"
     # import os
@@ -165,8 +169,15 @@ def project_new_segmentation():
 
 if __name__ == '__main__':
 
-    # 1.) find false merge objects
-    find_false_merges('splB_z1')
+    # meta = MetaSet(cache_folder)
+    # meta.load()
+    # ds_test = meta.get_dataset('splB_z1')
+    # ds_test.cache_folder = cache_folder + 'splB_z1'
+    # meta.add_dataset('splB_z1', ds_test)
+    # meta.save()
+    #
+    # # 1.) find false merge objects
+    # find_false_merges('splB_z1')
 
     # 2.) resolve the objs classified as false merges
     # parameters for the Multicut
