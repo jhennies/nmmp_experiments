@@ -20,7 +20,10 @@ from multicut_src import ExperimentSettings
 from multicut_src import MetaSet
 from multicut_src import DataSet
 
-cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_splB_z1_avoid_duplicates/cache/'
+
+cache_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170328_test/cache/'
+source_folder = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
+
 
 def find_false_merges(ds_str):
 
@@ -30,19 +33,19 @@ def find_false_merges(ds_str):
 
     # Load train datasets: for each source
     train_raw_sources = [
-        '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5'
     ]
     train_raw_sources_keys = [
         'z/0/raw'
     ]
     train_probs_sources = [
-        '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.probs.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+        source_folder + 'cremi.splB.train.probs.crop.axes_xyz.split_z.h5'
     ]
     train_probs_sources_keys = [
         'z/0/data'
     ]
     gtruths_paths = [
-        '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
+        source_folder + 'cremi.splB.raw_neurons.crop.axes_xyz.split_z.h5'
     ]
     gtruths_keys = [
         'z/0/neuron_ids'
@@ -59,17 +62,20 @@ def find_false_merges(ds_str):
         trainsets[-1].add_gt(gtruths_paths[id_source], gtruths_keys[id_source])
 
     train_segs = [
-        ['/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
+        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
     ]
-    test_seg = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/result.h5'
+    test_seg = cache_folder + '../result.h5'
 
     train_keys = [
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
     ] * 1
     test_key = 'z/1/test'
-    rf_save_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/cache/rf_cache/path_rfs'
+    rf_save_folder = cache_folder + 'rf_cache/path_rfs'
 
     paths_save_folder = cache_folder + 'path_data/'
+
+    params = ExperimentSettings()
+    params.set_anisotropy(10.)
 
     paths, false_merge_probs, path_to_objs = compute_false_merges(
         trainsets,
@@ -80,7 +86,7 @@ def find_false_merges(ds_str):
         test_key,
         rf_save_folder,
         paths_save_folder=paths_save_folder,
-        params=ExperimentSettings()
+        params=params
     )
     print "Succesfully computed false mereg probabilities for", len(false_merge_probs), "paths"
     # import os
@@ -97,6 +103,7 @@ def resolve_false_merges(exp_params):
     meta = MetaSet(cache_folder)
     meta.load()
     ds = meta.get_dataset('splB_z1')
+    # TODO Change here
     with open(cache_folder + 'path_data/path_splB_z1.pkl') as f:
         path_data = pickle.load(f)
     paths = path_data['paths']
@@ -124,6 +131,7 @@ def resolve_false_merges(exp_params):
     # mc_weights_path = '/home/constantin/Work/home_hdd/cache/cremi/sample_A_train/probs_to_energies_0_-8166828587302537792.h5'
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
+    # TODO change here
     mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_7098259014394751231.h5", "data")
 
     with open(rf_path) as f:
@@ -189,6 +197,6 @@ if __name__ == '__main__':
     # mc_params.max_sample_size = 20
     #
     # resolve_false_merges(mc_params)
-    #
-    # # 3.) project the resolved result to segmentation
-    # project_new_segmentation()
+
+    # 3.) project the resolved result to segmentation
+    project_new_segmentation()
