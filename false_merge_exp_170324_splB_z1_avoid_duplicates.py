@@ -45,7 +45,7 @@ def find_false_merges(ds_str):
         'z/0/data'
     ]
     gtruths_paths = [
-        source_folder + 'cremi.splB.raw_neurons.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5'
     ]
     gtruths_keys = [
         'z/0/neuron_ids'
@@ -62,7 +62,7 @@ def find_false_merges(ds_str):
         trainsets[-1].add_gt(gtruths_paths[id_source], gtruths_keys[id_source])
 
     train_segs = [
-        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
+        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9
     ]
     test_seg = cache_folder + '../result.h5'
 
