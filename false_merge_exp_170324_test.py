@@ -21,7 +21,7 @@ from multicut_src import MetaSet
 from multicut_src import DataSet
 
 
-cache_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170324_test_recompute/cache/'
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_test/cache/'
 
 
 def find_false_merges(ds_str):
@@ -164,6 +164,13 @@ def project_new_segmentation():
     )
 
 if __name__ == '__main__':
+
+    meta = MetaSet(cache_folder)
+    meta.load()
+    ds_test = meta.get_dataset('splB_z1')
+    ds_test.cache_folder = cache_folder + 'splB_z1'
+    meta.add_dataset('splB_z1', ds_test)
+    meta.save()
 
     # 1.) find false merge objects
     find_false_merges('splB_z1')

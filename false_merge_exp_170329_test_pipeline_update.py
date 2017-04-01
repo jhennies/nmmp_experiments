@@ -2,16 +2,10 @@ import os
 import vigra
 import numpy as np
 import cPickle as pickle
-import time
 
 import sys
 sys.path.append(
     '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
-
-from multicut_src import shortest_paths, path_feature_aggregator
-from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
-from multicut_src import project_resolved_objects_to_segmentation
-from multicut_src import ExperimentSettings
 
 # hack to get in meta
 # import sys
@@ -20,9 +14,14 @@ from multicut_src import ExperimentSettings
 from multicut_src import MetaSet
 from multicut_src import DataSet
 
+# from multicut_src import shortest_paths, path_feature_aggregator
+from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
+from multicut_src import project_resolved_objects_to_segmentation
+from multicut_src import ExperimentSettings
 
-cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_splB_z1_avoid_duplicates/cache/'
-source_folder = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
+
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170329_test_pipeline_update/cache/'
+source_folder = '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/'
 
 
 def find_false_merges(ds_str):
@@ -33,46 +32,22 @@ def find_false_merges(ds_str):
 
     # Load train datasets: for each source
     train_raw_sources = [
-        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
     ]
     train_raw_sources_keys = [
-        'z/0/raw',
-        'z/1/raw',
-        'z/0/raw',
-        'z/0/raw',
-        'z/1/raw'
+        'z/0/raw'
     ]
     train_probs_sources = [
-        source_folder + 'cremi.splA.train.probs.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splA.train.probs.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splB.train.probs.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splC.train.probs.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splC.train.probs.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splB.train.probs.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
     ]
     train_probs_sources_keys = [
-        'z/0/data',
-        'z/1/data',
-        'z/0/data',
-        'z/0/data',
-        'z/1/data'
+        'z/0/data'
     ]
     gtruths_paths = [
-        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splA.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splB.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5',
-        source_folder + 'cremi.splC.train.raw_neurons.crop.axes_xyz.split_z.h5'
+        source_folder + 'cremi.splB.raw_neurons.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'
     ]
     gtruths_keys = [
-        'z/0/neuron_ids',
-        'z/1/neuron_ids',
-        'z/0/neuron_ids',
-        'z/0/neuron_ids',
-        'z/1/neuron_ids'
+        'z/0/neuron_ids'
     ]
     trainsets = []
     for id_source, raw_source in enumerate(train_raw_sources):
@@ -86,7 +61,7 @@ def find_false_merges(ds_str):
         trainsets[-1].add_gt(gtruths_paths[id_source], gtruths_keys[id_source])
 
     train_segs = [
-        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9
+        [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.crop_x100-612_y100-612.split_z.h5'] * 9
     ]
     test_seg = cache_folder + '../result.h5'
 
@@ -127,7 +102,6 @@ def resolve_false_merges(exp_params):
     meta = MetaSet(cache_folder)
     meta.load()
     ds = meta.get_dataset('splB_z1')
-    # TODO Change here
     with open(cache_folder + 'path_data/path_splB_z1.pkl') as f:
         path_data = pickle.load(f)
     paths = path_data['paths']
@@ -156,7 +130,7 @@ def resolve_false_merges(exp_params):
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
     # TODO change here
-    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_7098259014394751231.h5", "data")
+    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_-110420280210600738_rawprobregtopo.h5", "data")
 
     with open(rf_path) as f:
         path_rf = pickle.load(f)
@@ -192,35 +166,52 @@ def project_new_segmentation():
         'z/1/test'
     )
 
+
+def resolve_false_merges_threshold_test_settings(mc_params, meta):
+
+    test_set_name = 'splB_z1'
+    weight_file_name = 'probs_to_energies_0_-110420280210600738_rawprobregtopo.h5'
+
+    from evaluation import resolve_merges_threshold_test
+    resolve_merges_threshold_test(
+        meta, test_set_name,
+        mc_params, cache_folder,
+        weight_file_name,
+        min_prob_thresh=0.5
+    )
+
+
 if __name__ == '__main__':
 
-    # 1.) find false merge objects
-    find_false_merges('splB_z1')
+    # # 1.) find false merge objects
+    # find_false_merges('splB_z1')
 
-    # # 2.) resolve the objs classified as false merges
-    # # parameters for the Multicut
-    # meta = MetaSet(cache_folder)
-    # mc_params = ExperimentSettings()
-    # rfcache = os.path.join(meta.meta_folder, "rf_cache")
-    # mc_params.set_rfcache(rfcache)
-    #
-    # mc_params.set_anisotropy(10.)
-    # mc_params.set_use2d(False)
-    #
-    # mc_params.set_nthreads(30)
-    #
-    # mc_params.set_ntrees(500)
-    #
-    # # mc_params.set_solver("nifty_fusionmoves")
-    # # mc_params.set_verbose(True)
-    # mc_params.set_weighting_scheme("z")
-    #
-    # mc_params.set_lifted_neighborhood(3)
-    #
-    # mc_params.min_nh_range = 5
+    # 2.) resolve the objs classified as false merges
+    # parameters for the Multicut
+    meta = MetaSet(cache_folder)
+    mc_params = ExperimentSettings()
+    rfcache = os.path.join(meta.meta_folder, "rf_cache")
+    mc_params.set_rfcache(rfcache)
+
+    mc_params.set_anisotropy(10.)
+    mc_params.set_use2d(False)
+
+    mc_params.set_nthreads(30)
+
+    mc_params.set_ntrees(500)
+
+    mc_params.set_solver("multicut_fusionmoves")
+    # mc_params.set_verbose(True)
+    mc_params.set_weighting_scheme("z")
+
+    mc_params.set_lifted_neighborhood(3)
+
+    mc_params.min_nh_range = 5
     # mc_params.max_sample_size = 20
-    #
-    # resolve_false_merges(mc_params)
+    mc_params.max_sample_size = 10
 
-    # 3.) project the resolved result to segmentation
-    project_new_segmentation()
+    # resolve_false_merges(mc_params)
+    resolve_false_merges_threshold_test_settings(mc_params, meta)
+
+    # # 3.) project the resolved result to segmentation
+    # project_new_segmentation()

@@ -1,17 +1,11 @@
-import os
+
 import vigra
 import numpy as np
 import cPickle as pickle
-import time
 
 import sys
 sys.path.append(
     '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
-
-from multicut_src import shortest_paths, path_feature_aggregator
-from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
-from multicut_src import project_resolved_objects_to_segmentation
-from multicut_src import ExperimentSettings
 
 # hack to get in meta
 # import sys
@@ -20,8 +14,15 @@ from multicut_src import ExperimentSettings
 from multicut_src import MetaSet
 from multicut_src import DataSet
 
+# from multicut_src import shortest_paths, path_feature_aggregator
+from multicut_src import compute_false_merges, resolve_merges_with_lifted_edges
+from multicut_src import project_resolved_objects_to_segmentation
+from multicut_src import ExperimentSettings
 
-cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170324_splB_z1_avoid_duplicates/cache/'
+
+
+
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170329_splB_z1/cache/'
 source_folder = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
 
 
@@ -87,12 +88,12 @@ def find_false_merges(ds_str):
 
     train_segs = [
         [source_folder + 'cremi.splB.train.mcseg_betas.crop.axes_xyz.split_z.h5'] * 9
-    ]
+    ] * 5
     test_seg = cache_folder + '../result.h5'
 
     train_keys = [
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
-    ] * 1
+    ] * 5
     test_key = 'z/1/test'
     rf_save_folder = cache_folder + 'rf_cache/path_rfs'
 
@@ -127,7 +128,6 @@ def resolve_false_merges(exp_params):
     meta = MetaSet(cache_folder)
     meta.load()
     ds = meta.get_dataset('splB_z1')
-    # TODO Change here
     with open(cache_folder + 'path_data/path_splB_z1.pkl') as f:
         path_data = pickle.load(f)
     paths = path_data['paths']
@@ -156,7 +156,7 @@ def resolve_false_merges(exp_params):
 
     mc_seg = vigra.readHDF5(test_seg, 'z/1/test')
     # TODO change here
-    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_7098259014394751231.h5", "data")
+    mc_weights = vigra.readHDF5(cache_folder + "splB_z1/probs_to_energies_0_-488926623035149270.h5", "data")
 
     with open(rf_path) as f:
         path_rf = pickle.load(f)
@@ -192,6 +192,15 @@ def project_new_segmentation():
         'z/1/test'
     )
 
+
+def resolve_false_merges_threshold_test_settings(mc_params):
+
+
+
+    from evaluation import resolve_merges_threshold_test
+    resolve_merges_threshold_test(mc_params, cache_folder)
+
+
 if __name__ == '__main__':
 
     # 1.) find false merge objects
@@ -220,7 +229,8 @@ if __name__ == '__main__':
     # mc_params.min_nh_range = 5
     # mc_params.max_sample_size = 20
     #
-    # resolve_false_merges(mc_params)
+    # # resolve_false_merges(mc_params)
+    # resolve_false_merges_threshold_test_settings(mc_params)
 
-    # 3.) project the resolved result to segmentation
-    project_new_segmentation()
+    # # 3.) project the resolved result to segmentation
+    # project_new_segmentation()

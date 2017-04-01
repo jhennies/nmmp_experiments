@@ -1,15 +1,14 @@
 import pickle
 import numpy as np
 
-folder = '/media/julian/Daten/datasets/results/multicut_workflow/170324_test_recompute/cache/debug/'
+folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170329_test_pipeline_update/cache/debug/'
 
-with open(folder + 'features_resolve_87.0.pkl', mode='r') as f:
+with open(folder + 'features_resolve_176.0.pkl', mode='r') as f:
     frs = pickle.load(f)
 with open(folder + 'features_test.pkl', mode='r') as f:
     fts = pickle.load(f)
 # with open(folder + 'fs_12.0.pkl', mode='r') as f:
 #     frp = pickle.load(f)
-
 
 for idt, ft in enumerate(fts):
     for idr, fr in enumerate(frs):

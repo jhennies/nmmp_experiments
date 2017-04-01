@@ -21,8 +21,8 @@ from multicut_src import MetaSet
 from multicut_src import DataSet
 
 
-cache_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170328_test/cache/'
-source_folder = '/media/julian/Daten/datasets/cremi_2016/resolve_merges/'
+cache_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170328_test/cache/'
+source_folder = '/mnt/localdata01/jhennies/neuraldata/cremi_2016/resolve_merges/'
 
 
 def find_false_merges(ds_str):
@@ -167,7 +167,25 @@ def project_new_segmentation():
         'z/1/test'
     )
 
+
+def resolve_false_merges_threshold_test_settings(meta, mc_params):
+
+    test_set_name = 'splB_z1'
+
+    from evaluation import resolve_merges_threshold_test
+    resolve_merges_threshold_test(
+        meta, test_set_name,
+        mc_params, cache_folder)
+
+
 if __name__ == '__main__':
+
+    meta = MetaSet(cache_folder)
+    meta.load()
+    ds_test = meta.get_dataset('splB_z1')
+    ds_test.cache_folder = cache_folder + 'splB_z1'
+    meta.add_dataset('splB_z1', ds_test)
+    meta.save()
 
     # # 1.) find false merge objects
     # find_false_merges('splB_z1')
@@ -195,7 +213,8 @@ if __name__ == '__main__':
     mc_params.min_nh_range = 5
     mc_params.max_sample_size = 20
 
-    resolve_false_merges(mc_params)
+    # resolve_false_merges(mc_params)
+    resolve_false_merges_threshold_test_settings(meta, mc_params)
 
-    # 3.) project the resolved result to segmentation
-    project_new_segmentation()
+    # # 3.) project the resolved result to segmentation
+    # project_new_segmentation()
