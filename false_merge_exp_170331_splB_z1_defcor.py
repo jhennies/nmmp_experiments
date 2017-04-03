@@ -162,8 +162,8 @@ if __name__ == '__main__':
     # mc_params.set_lifted_neighborhood(3)
     #
     # mc_params.min_nh_range = 5
-    # # mc_params.max_sample_size = 20
-    # mc_params.max_sample_size = 10
+    # mc_params.max_sample_size = 20
+    # # mc_params.max_sample_size = 10
     #
     # # resolve_false_merges(mc_params)
     # resolve_false_merges_threshold_test_settings(mc_params, meta)
