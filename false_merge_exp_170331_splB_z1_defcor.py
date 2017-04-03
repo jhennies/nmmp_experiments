@@ -147,24 +147,24 @@ if __name__ == '__main__':
     mc_params = ExperimentSettings()
     rfcache = os.path.join(meta.meta_folder, "rf_cache")
     mc_params.set_rfcache(rfcache)
-    
+
     mc_params.set_anisotropy(10.)
     mc_params.set_use2d(False)
-    
+
     mc_params.set_nthreads(30)
-    
+
     mc_params.set_ntrees(500)
-    
+
     mc_params.set_solver("multicut_fusionmoves")
     # mc_params.set_verbose(True)
     mc_params.set_weighting_scheme("z")
-    
+
     mc_params.set_lifted_neighborhood(3)
-    
+
     mc_params.min_nh_range = 5
     mc_params.max_sample_size = 20
     # mc_params.max_sample_size = 10
-    
+
     # resolve_false_merges(mc_params)
     resolve_false_merges_threshold_test_settings(mc_params, meta)
 

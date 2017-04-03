@@ -89,6 +89,7 @@ def resolve_merges_threshold_test(
 
     # Get the random forest classifier
     rf_path = cache_folder + 'rf_cache/path_rfs/rf_merges_ds_train_0_ds_train_1_ds_train_2_ds_train_3_ds_train_4.pkl'
+    # TODO: Generate name automatically
     with open(rf_path) as f:
         path_rf = pickle.load(f)
 
