@@ -125,7 +125,7 @@ def find_false_merges(ds_str):
 def resolve_false_merges_threshold_test_settings(mc_params, meta):
 
     test_set_name = 'splB_z1'
-    weight_file_name = 'probs_to_energies_0_-110420280210600738_rawprobregtopo.h5'
+    weight_file_name = 'probs_to_energies_0_3926342027172393727_rawprobregtopo.h5'
 
     from evaluation import resolve_merges_threshold_test
     resolve_merges_threshold_test(
@@ -138,35 +138,35 @@ def resolve_false_merges_threshold_test_settings(mc_params, meta):
 
 if __name__ == '__main__':
 
-    # 1.) find false merge objects
-    find_false_merges('splB_z1')
+    # # 1.) find false merge objects
+    # find_false_merges('splB_z1')
 
-    # # 2.) resolve the objs classified as false merges
-    # # parameters for the Multicut
-    # meta = MetaSet(cache_folder)
-    # mc_params = ExperimentSettings()
-    # rfcache = os.path.join(meta.meta_folder, "rf_cache")
-    # mc_params.set_rfcache(rfcache)
-    #
-    # mc_params.set_anisotropy(10.)
-    # mc_params.set_use2d(False)
-    #
-    # mc_params.set_nthreads(30)
-    #
-    # mc_params.set_ntrees(500)
-    #
-    # mc_params.set_solver("multicut_fusionmoves")
-    # # mc_params.set_verbose(True)
-    # mc_params.set_weighting_scheme("z")
-    #
-    # mc_params.set_lifted_neighborhood(3)
-    #
-    # mc_params.min_nh_range = 5
-    # # mc_params.max_sample_size = 20
+    # 2.) resolve the objs classified as false merges
+    # parameters for the Multicut
+    meta = MetaSet(cache_folder)
+    mc_params = ExperimentSettings()
+    rfcache = os.path.join(meta.meta_folder, "rf_cache")
+    mc_params.set_rfcache(rfcache)
+    
+    mc_params.set_anisotropy(10.)
+    mc_params.set_use2d(False)
+    
+    mc_params.set_nthreads(30)
+    
+    mc_params.set_ntrees(500)
+    
+    mc_params.set_solver("multicut_fusionmoves")
+    # mc_params.set_verbose(True)
+    mc_params.set_weighting_scheme("z")
+    
+    mc_params.set_lifted_neighborhood(3)
+    
+    mc_params.min_nh_range = 5
+    mc_params.max_sample_size = 20
     # mc_params.max_sample_size = 10
-    #
-    # # resolve_false_merges(mc_params)
-    # resolve_false_merges_threshold_test_settings(mc_params, meta)
+    
+    # resolve_false_merges(mc_params)
+    resolve_false_merges_threshold_test_settings(mc_params, meta)
 
     # # 3.) project the resolved result to segmentation
     # project_new_segmentation()

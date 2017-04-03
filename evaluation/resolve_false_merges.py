@@ -84,11 +84,11 @@ def resolve_merges_threshold_test(
     # Extract all paths for each of the found objects
     false_paths = {}
     for obj in objs_with_prob_greater_thresh:
-        print paths_to_objs == obj
+        # print paths_to_objs == obj
         false_paths[obj] = np.array(paths)[paths_to_objs == obj]
 
     # Get the random forest classifier
-    rf_path = cache_folder + 'rf_cache/path_rfs/rf_merges_ds_train_0.pkl'
+    rf_path = cache_folder + 'rf_cache/path_rfs/rf_merges_ds_train_0_ds_train_1_ds_train_2_ds_train_3_ds_train_4.pkl'
     with open(rf_path) as f:
         path_rf = pickle.load(f)
 
