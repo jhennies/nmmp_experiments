@@ -91,8 +91,9 @@ def find_false_merges(ds_str):
     ] * 5
     test_seg = cache_folder + '../result.h5'
 
+    # FIXME This was wrong!!!
     train_keys = [
-        ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7']
+        ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7'],
     ] * 5
     test_key = 'z/1/test'
     rf_save_folder = cache_folder + 'rf_cache/path_rfs'
