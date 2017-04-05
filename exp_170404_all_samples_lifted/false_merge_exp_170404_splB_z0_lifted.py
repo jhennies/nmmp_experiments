@@ -20,7 +20,7 @@ from multicut_src import project_resolved_objects_to_segmentation
 from multicut_src import ExperimentSettings
 
 results_folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170404_all_samples_lifted/'
-cache_folder = results_folder + '170404_splB_z1_lifted/cache/'
+cache_folder = results_folder + '170404_splB_z0_lifted/cache/'
 source_folder = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
 
 
@@ -41,7 +41,7 @@ def find_false_merges(ds_str):
     train_raw_sources_keys = [
         'z/0/raw',
         'z/1/raw',
-        'z/0/raw',
+        'z/1/raw',
         'z/0/raw',
         'z/1/raw'
     ]
@@ -55,7 +55,7 @@ def find_false_merges(ds_str):
     train_probs_sources_keys = [
         'z/0/data',
         'z/1/data',
-        'z/0/data',
+        'z/1/data',
         'z/0/data',
         'z/1/data'
     ]
@@ -69,14 +69,14 @@ def find_false_merges(ds_str):
     gtruths_keys = [
         'z/0/neuron_ids',
         'z/1/neuron_ids',
-        'z/0/neuron_ids',
+        'z/1/neuron_ids',
         'z/0/neuron_ids',
         'z/1/neuron_ids'
     ]
     ds_names = [
         'splA_z0',
         'splA_z1',
-        'splB_z0',
+        'splB_z1',
         'splC_z0',
         'splC_z1'
     ]
@@ -103,11 +103,11 @@ def find_false_merges(ds_str):
     train_keys = [
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7'],
         ['z/1/beta_0.5', 'z/1/beta_0.45', 'z/1/beta_0.55', 'z/1/beta_0.4', 'z/1/beta_0.6', 'z/1/beta_0.35', 'z/1/beta_0.65', 'z/1/beta_0.3', 'z/1/beta_0.7'],
-        ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7'],
+        ['z/1/beta_0.5', 'z/1/beta_0.45', 'z/1/beta_0.55', 'z/1/beta_0.4', 'z/1/beta_0.6', 'z/1/beta_0.35', 'z/1/beta_0.65', 'z/1/beta_0.3', 'z/1/beta_0.7'],
         ['z/0/beta_0.5', 'z/0/beta_0.45', 'z/0/beta_0.55', 'z/0/beta_0.4', 'z/0/beta_0.6', 'z/0/beta_0.35', 'z/0/beta_0.65', 'z/0/beta_0.3', 'z/0/beta_0.7'],
         ['z/1/beta_0.5', 'z/1/beta_0.45', 'z/1/beta_0.55', 'z/1/beta_0.4', 'z/1/beta_0.6', 'z/1/beta_0.35', 'z/1/beta_0.65', 'z/1/beta_0.3', 'z/1/beta_0.7']
     ]
-    test_key = 'z/1/test'
+    test_key = 'z/0/test'
     rf_save_folder = cache_folder + 'rf_cache/path_rfs'
 
     paths_save_folder = cache_folder + 'path_data/'
@@ -156,7 +156,7 @@ def resolve_false_merges_threshold_test_settings(mc_params, meta):
 if __name__ == '__main__':
 
     # 1.) find false merge objects
-    find_false_merges('splB_z1')
+    find_false_merges('splB_z0')
 
     # # 2.) resolve the objs classified as false merges
     # # parameters for the Multicut
