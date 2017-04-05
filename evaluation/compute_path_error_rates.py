@@ -28,6 +28,7 @@ gt = vigra.readHDF5(
 
 min_prob_thresh = 0.5
 thresh_range = np.arange(min_prob_thresh, 1.0, 0.1)
+thresh_range = [0.5]
 
 # Load the original segmentation
 original_seg = vigra.readHDF5(
@@ -254,6 +255,18 @@ for thresh in thresh_range:
     print '    Not merged:      {}'.format(not_merged)
     print '        Split:       {}'.format(not_merged_split)
     print '        Not split:   {}'.format(not_merged_not_split)
+
+
+    #
+    # from alex_evaluation import comparison
+    #
+    # correct_obj = comparison(original_seg, gt, resolved_seg)
+    # correct = len(correct_obj)
+    #
+    # print '--------------------------------'
+    # print 'Correctly segmented objects: {}'.format(correct)
+
+
 
 with open(results_folder + 'evaluation.pkl', mode='w') as f:
     pickle.dump(store_eval, f)
