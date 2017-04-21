@@ -90,8 +90,8 @@ vigra.writeHDF5(mc_seg, cache_folder + '../pre_result.h5', 'z/0/test')
 vigra.writeHDF5(mc_seg_train, cache_folder + '../pre_result.h5', 'z/1/train')
 
 # # Load pre-result
-# mc_seg = vigra.readHDF5(cache_folder + '../pre_result.h5', 'z/1/test')
-# mc_seg_train = vigra.readHDF5(cache_folder + '../pre_result.h5', 'z/0/train')
+# mc_seg = vigra.readHDF5(cache_folder + '../pre_result.h5', 'z/0/test')
+# mc_seg_train = vigra.readHDF5(cache_folder + '../pre_result.h5', 'z/1/train')
 
 mc_seg, _, _ = vigra.analysis.relabelConsecutive(mc_seg, start_label=1, keep_zeros=False)
 mc_seg_train, _, _ = vigra.analysis.relabelConsecutive(mc_seg_train, start_label=1, keep_zeros=False)
@@ -100,8 +100,8 @@ mc_seg_train, _, _ = vigra.analysis.relabelConsecutive(mc_seg_train, start_label
 mc_seg = merge_small_segments(mc_seg, 100)
 mc_seg_train = merge_small_segments(mc_seg_train, 100)
 
-vigra.writeHDF5(mc_seg, cache_folder + '../result.h5', 'z/1/test')
-vigra.writeHDF5(mc_seg_train, cache_folder + '../result.h5', 'z/0/train')
+vigra.writeHDF5(mc_seg, cache_folder + '../result.h5', 'z/0/test')
+vigra.writeHDF5(mc_seg_train, cache_folder + '../result.h5', 'z/1/train')
 
 
 

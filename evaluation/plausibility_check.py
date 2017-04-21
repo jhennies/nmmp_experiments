@@ -1,9 +1,9 @@
 import pickle
 import numpy as np
 
-folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170331_splB_z1_defcor/cache/debug/'
+folder = '/mnt/localdata01/jhennies/neuraldata/results/multicut_workflow/170404_all_samples_lifted/170404_splB_z1_lifted/cache/debug/'
 
-with open(folder + 'features_resolve_117.0.pkl', mode='r') as f:
+with open(folder + 'features_resolve_70.0.pkl', mode='r') as f:
     frs = pickle.load(f)
 with open(folder + 'features_test.pkl', mode='r') as f:
     fts = pickle.load(f)

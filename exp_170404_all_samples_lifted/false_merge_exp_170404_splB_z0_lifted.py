@@ -141,49 +141,64 @@ def find_false_merges(ds_str):
 
 def resolve_false_merges_threshold_test_settings(mc_params, meta):
 
-    test_set_name = 'splB_z1'
-    weight_file_name = 'probs_to_energies_0_3926342027172393727_rawprobregtopo.h5'
+    test_set_name = 'splB_z0'
+    weight_file_name = 'probs_to_energies_0_-2461546688832638772_rawprobregtopo.h5'
+    lifted_file_name = 'lifted_probs_to_energies_0_3_0.5_1.0.h5'
+    pre_seg_path = cache_folder + '../result.h5'
+    pre_seg_key = 'z/0/test'
+    rf_cache_name = 'rf_merges_ds_train_splA_z0_ds_train_splA_z1_ds_train_splB_z1_ds_train_splC_z0_ds_train_splC_z1.pkl'
+    result_file_name = 'result_resolved_with_lifted_weight_{}'.format(mc_params.lifted_path_weights_factor)
 
+    sys.path.append('..')
     from evaluation import resolve_merges_threshold_test
     resolve_merges_threshold_test(
         meta, test_set_name,
         mc_params, cache_folder,
+        result_file_name,
         weight_file_name,
-        min_prob_thresh=0.5
+        lifted_file_name,
+        pre_seg_path,
+        pre_seg_key,
+        rf_cache_name,
+        min_prob_thresh=0.3,
+        max_prob_thresh=1.,
+        exclude_objs_with_larger_thresh=True,
+        lowest_thresh_image_only=True
     )
 
 
 if __name__ == '__main__':
 
-    # 1.) find false merge objects
-    find_false_merges('splB_z0')
+    # # 1.) find false merge objects
+    # find_false_merges('splB_z0')
 
-    # # 2.) resolve the objs classified as false merges
-    # # parameters for the Multicut
-    # meta = MetaSet(cache_folder)
-    # mc_params = ExperimentSettings()
-    # rfcache = os.path.join(meta.meta_folder, "rf_cache")
-    # mc_params.set_rfcache(rfcache)
-    #
-    # mc_params.set_anisotropy(10.)
-    # mc_params.set_use2d(False)
-    #
-    # mc_params.set_nthreads(30)
-    #
-    # mc_params.set_ntrees(500)
-    #
-    # mc_params.set_solver("multicut_fusionmoves")
-    # # mc_params.set_verbose(True)
-    # mc_params.set_weighting_scheme("z")
-    #
-    # mc_params.set_lifted_neighborhood(3)
-    #
-    # mc_params.min_nh_range = 5
-    # mc_params.max_sample_size = 20
-    # # mc_params.max_sample_size = 10
-    #
-    # # resolve_false_merges(mc_params)
-    # resolve_false_merges_threshold_test_settings(mc_params, meta)
+    # 2.) resolve the objs classified as false merges
+    # parameters for the Multicut
+    meta = MetaSet(cache_folder)
+    mc_params = ExperimentSettings()
+    rfcache = os.path.join(meta.meta_folder, "rf_cache")
+    mc_params.set_rfcache(rfcache)
+   
+    mc_params.set_anisotropy(10.)
+    mc_params.set_use2d(False)
+    
+    mc_params.set_nthreads(30)
+    
+    mc_params.set_ntrees(500)
+    
+    mc_params.set_solver("multicut_fusionmoves")
+    # mc_params.set_verbose(True)
+    mc_params.set_weighting_scheme("z")
+    
+    mc_params.set_lifted_neighborhood(3)
+    
+    mc_params.min_nh_range = 5
+    mc_params.max_sample_size = 20
+    # mc_params.max_sample_size = 10
+    mc_params.lifted_path_weights_factor = 5.
+    
+    # resolve_false_merges(mc_params)
+    resolve_false_merges_threshold_test_settings(mc_params, meta)
 
     # # 3.) project the resolved result to segmentation
     # project_new_segmentation()

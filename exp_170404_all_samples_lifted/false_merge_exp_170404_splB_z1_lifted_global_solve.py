@@ -170,7 +170,7 @@ def resolve_false_merges_grid_search_lifted_path_weights_factor(mc_params, meta)
     # grid_search = [0.1, 0.5, 1.0, 5.0, 10, 50, 100]
     # grid_search = [0.0001, 0.001, 0.01]
     # grid_search = [1000, 10000, 100000]
-    grid_search = [2]
+    grid_search = [5]
 
     for val in grid_search:
 
@@ -179,14 +179,16 @@ def resolve_false_merges_grid_search_lifted_path_weights_factor(mc_params, meta)
         test_set_name = 'splB_z1'
         weight_file_name = 'probs_to_energies_0_-2461546688832638772_rawprobregtopo.h5'
         lifted_file_name = 'lifted_probs_to_energies_0_3_0.5_1.0.h5'
-        pre_seg_path = cache_folder + '../result.h5'
-        pre_seg_key = 'z/1/test'
+        # pre_seg_path = cache_folder + '../result.h5'
+        # pre_seg_key = 'z/1/test'
+        pre_seg_path = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/cremi.splB.train.wsdt_relabel_defect_correct.crop.axes_xyz.split_z.h5'
+        pre_seg_key = 'z/1/labels'
         rf_cache_name = 'rf_merges_ds_train_splA_z0_ds_train_splA_z1_ds_train_splB_z0_ds_train_splC_z0_ds_train_splC_z1.pkl'
-        result_file_name = 'result_resolved_test4_w{}'.format(val)
+        result_file_name = 'result_resolved_global_solve_test_w{}'.format(val)
 
         sys.path.append('..')
-        from evaluation import resolve_merges_threshold_test
-        resolve_merges_threshold_test(
+        from evaluation import resolve_merges_threshold_test_global_solve
+        resolve_merges_threshold_test_global_solve(
             meta, test_set_name,
             mc_params, cache_folder,
             result_file_name,
