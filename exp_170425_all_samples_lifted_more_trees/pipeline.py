@@ -13,6 +13,8 @@ from multicut_src import lifted_multicut_workflow
 from multicut_src import load_dataset
 from multicut_src import compute_false_merges
 from multicut_src import resolve_merges_with_lifted_edges_global, resolve_merges_with_lifted_edges
+from multicut_src import RandomForest
+from multicut_src import ExperimentSettings
 
 def init_dataset(
         meta_folder, name,
@@ -127,6 +129,8 @@ def resolve_false_merges_global(
     # with open(os.path.join(paths_cache_folder, 'paths_ds_{}.pkl'.format(ds_name))) as f:
     #     path_data = pickle.load(f)
     paths = vigra.readHDF5(path_data_filepath, 'all_paths')
+    if paths.size:
+        paths = np.array([path.reshape((len(path) / 3, 3)) for path in paths])
     paths_to_objs = vigra.readHDF5(path_data_filepath, 'paths_to_objs')
     with open(os.path.join(paths_cache_folder, 'false_paths_predictions.pkl')) as f:
         false_merge_probs = pickle.load(f)
@@ -154,9 +158,10 @@ def resolve_false_merges_global(
         # print paths_to_objs == obj
         false_paths[obj] = np.array(paths)[paths_to_objs == obj]
 
-    rf_filepath = os.path.join(rf_cache_folder, rf_cache_name, 'rf.pkl')
-    with open(rf_filepath) as f:
-        path_rf = pickle.load(f)
+    rf_filepath = os.path.join(rf_cache_folder, rf_cache_name)
+    # with open(rf_filepath) as f:
+    #     path_rf = pickle.load(f)
+    path_rf = RandomForest.load_from_file(rf_filepath, 'rf', ExperimentSettings().n_threads)
 
     mc_segmentation = vigra.readHDF5(pre_seg_filepath, pre_seg_key)
     mc_weights_all = vigra.readHDF5(weight_filepath, "data")
