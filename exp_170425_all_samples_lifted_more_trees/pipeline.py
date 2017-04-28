@@ -112,14 +112,15 @@ def find_false_merges(
         pickle.dump(false_merge_probs, f)
 
 
-def resolve_false_merges_global(
+def resolve_false_merges(
         ds_name, meta_folder, paths_cache_folder, rf_cache_folder,
         new_nodes_filepath,
         pre_seg_filepath, pre_seg_key,
         weight_filepath, lifted_filepath,
         rf_cache_name,
         min_prob_thresh, max_prob_thresh,
-        exclude_objs_with_larger_thresh
+        exclude_objs_with_larger_thresh,
+        global_resolve=True
 ):
 
     ds = load_dataset(meta_folder, ds_name)
@@ -167,15 +168,26 @@ def resolve_false_merges_global(
     mc_weights_all = vigra.readHDF5(weight_filepath, "data")
     lifted_weights_all = vigra.readHDF5(lifted_filepath, "data")
 
-    new_node_labels = resolve_merges_with_lifted_edges_global(
-        ds, seg_id,
-        false_paths,
-        path_rf,
-        mc_segmentation,
-        mc_weights_all,
-        paths_cache_folder=paths_cache_folder,
-        lifted_weights_all=lifted_weights_all
-    )
+    if global_resolve:
+        new_node_labels = resolve_merges_with_lifted_edges_global(
+            ds, seg_id,
+            false_paths,
+            path_rf,
+            mc_segmentation,
+            mc_weights_all,
+            paths_cache_folder=paths_cache_folder,
+            lifted_weights_all=lifted_weights_all
+        )
+    else:
+        new_node_labels = resolve_merges_with_lifted_edges(
+            ds, seg_id,
+            false_paths,
+            path_rf,
+            mc_segmentation,
+            mc_weights_all,
+            paths_cache_folder=paths_cache_folder,
+            lifted_weights_all=lifted_weights_all
+        )
 
     with open(new_nodes_filepath, 'w') as f:
         pickle.dump(new_node_labels, f)

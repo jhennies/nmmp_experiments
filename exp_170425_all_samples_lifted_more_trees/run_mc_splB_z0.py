@@ -13,6 +13,9 @@ from pipeline import run_lifted_mc
 from init_exp_splB_z0 import meta_folder, experiment_folder
 rf_cache_folder = os.path.join(meta_folder, 'rf_cache')
 
+# TODO Change here when switching half
+result_key = 'z/0/data'
+
 
 if __name__ == '__main__':
 
@@ -35,5 +38,5 @@ if __name__ == '__main__':
         train_name,
         test_name,
         experiment_folder + 'result.h5',
-        'z/0/data'
+        result_key
     )

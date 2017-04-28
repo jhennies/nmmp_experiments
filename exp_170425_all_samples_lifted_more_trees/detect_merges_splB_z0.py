@@ -11,6 +11,7 @@ from pipeline import find_false_merges
 
 # TODO Change here
 from init_exp_splB_z0 import meta_folder, project_folder, source_folder, experiment_folder
+from run_mc_splB_z0 import result_key
 
 # Path folders
 test_paths_cache_folder = os.path.join(meta_folder, 'path_data')
@@ -101,8 +102,6 @@ if __name__ == '__main__':
 
     # The test segmentation
     test_seg = experiment_folder + 'result.h5'
-    # TODO Change here when switching half
-    test_seg_key = 'z/0/data'
 
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().n_threads = 30
@@ -112,7 +111,7 @@ if __name__ == '__main__':
         test_name, meta_folder,
         rf_cache_folder,
         test_paths_cache_folder, train_paths_cache_folder,
-        test_seg, test_seg_key,
+        test_seg, result_key,
         train_segs, train_keys,
         train_raw_sources, train_raw_sources_keys,
         train_probs_sources, train_probs_sources_keys,
