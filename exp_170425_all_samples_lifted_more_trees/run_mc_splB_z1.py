@@ -38,5 +38,6 @@ if __name__ == '__main__':
         train_name,
         test_name,
         experiment_folder + 'result.h5',
-        result_key
+        result_key,
+        pre_save_path=experiment_folder + 'pre_result.h5'
     )

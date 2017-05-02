@@ -7,7 +7,7 @@ sys.path.append(
 
 from multicut_src import ExperimentSettings, load_dataset
 
-from pipeline import resolve_false_merges, project_new_result
+from pipeline import resolve_false_merges, project_new_result, project_resolved_objects_to_segmentation
 
 if __name__ == '__main__':
 
@@ -85,8 +85,12 @@ if __name__ == '__main__':
 
     result_filepath = os.path.join(experiment_folder, 'result_resolved_local.h5')
 
-    project_new_result(
-        test_name, meta_folder,
-        new_nodes_filepath,
-        result_filepath, pre_seg_key
+    # project_new_result(
+    #     test_name, meta_folder,
+    #     new_nodes_filepath,
+    #     result_filepath, pre_seg_key
+    # )
+
+    project_resolved_objects_to_segmentation(
+
     )
