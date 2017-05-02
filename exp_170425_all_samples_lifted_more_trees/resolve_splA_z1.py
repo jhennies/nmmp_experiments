@@ -46,27 +46,27 @@ if __name__ == '__main__':
     lifted_filepath = os.path.join(meta_folder, test_name,
                                    'lifted_probs_to_energies_0_3_0.5_2.0.h5')
 
-    # Global resolving -------------------
-    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global.pkl')
-
-    resolve_false_merges(
-        test_name, meta_folder, test_paths_cache_folder, rf_cache_folder,
-        new_nodes_filepath,
-        pre_seg_filepath, pre_seg_key,
-        weight_filepath, lifted_filepath,
-        rf_cache_name,
-        min_prob_thresh, max_prob_thresh,
-        exclude_objs_with_larger_thresh,
-        global_resolve=True
-    )
-
-    result_filepath = os.path.join(experiment_folder, 'result_resolved_global.h5')
-
-    project_new_result(
-        test_name, meta_folder,
-        new_nodes_filepath,
-        result_filepath, pre_seg_key
-    )
+    # # Global resolving -------------------
+    # new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global.pkl')
+    #
+    # resolve_false_merges(
+    #     test_name, meta_folder, test_paths_cache_folder, rf_cache_folder,
+    #     new_nodes_filepath,
+    #     pre_seg_filepath, pre_seg_key,
+    #     weight_filepath, lifted_filepath,
+    #     rf_cache_name,
+    #     min_prob_thresh, max_prob_thresh,
+    #     exclude_objs_with_larger_thresh,
+    #     global_resolve=True
+    # )
+    #
+    # result_filepath = os.path.join(experiment_folder, 'result_resolved_global.h5')
+    #
+    # project_new_result(
+    #     test_name, meta_folder,
+    #     new_nodes_filepath,
+    #     result_filepath, pre_seg_key
+    # )
 
     # Local resolving ---------------------
     new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local.pkl')

@@ -13,6 +13,9 @@ from pipeline import run_lifted_mc
 from init_exp_splA_z1 import meta_folder, experiment_folder
 rf_cache_folder = os.path.join(meta_folder, 'rf_cache')
 
+# TODO Change here when switching half
+result_key = 'z/1/data'
+
 
 if __name__ == '__main__':
 
