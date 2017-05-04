@@ -47,6 +47,7 @@ if __name__ == '__main__':
                                    'lifted_probs_to_energies_0_3_0.5_2.0.h5')
 
     # Global resolving -------------------
+    # TODO: Change here when adding result
     new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global.pkl')
 
     resolve_false_merges(
@@ -60,6 +61,7 @@ if __name__ == '__main__':
         global_resolve=True
     )
 
+    # TODO: Change here when adding result
     result_filepath = os.path.join(experiment_folder, 'result_resolved_global.h5')
 
     project_new_result(
@@ -69,6 +71,7 @@ if __name__ == '__main__':
     )
 
     # Local resolving ---------------------
+    # TODO: Change here when adding result
     new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local.pkl')
 
     resolve_false_merges(
@@ -82,6 +85,7 @@ if __name__ == '__main__':
         global_resolve=False
     )
 
+    # TODO: Change here when adding result
     result_filepath = os.path.join(experiment_folder, 'result_resolved_local.h5')
 
     project_resolved_objects_to_segmentation(

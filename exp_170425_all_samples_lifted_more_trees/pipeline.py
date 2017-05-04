@@ -15,6 +15,7 @@ from multicut_src import compute_false_merges
 from multicut_src import resolve_merges_with_lifted_edges_global, resolve_merges_with_lifted_edges
 from multicut_src import RandomForest
 from multicut_src import ExperimentSettings
+from multicut_src import merge_small_segments
 
 def init_dataset(
         meta_folder, name,
@@ -49,7 +50,8 @@ def run_lifted_mc(
         ds_train_name,
         ds_test_name,
         save_path,
-        results_name
+        results_name,
+        pre_save_path=None
 ):
     assert os.path.exists(os.path.split(save_path)[0]), "Please choose an existing folder to save your results"
 
@@ -71,6 +73,17 @@ def run_lifted_mc(
     )
 
     segmentation = ds_test.project_mc_result(seg_id, mc_nodes)
+
+    # Save in case sth in the following function goes wrong
+    if pre_save_path is not None:
+        vigra.writeHDF5(segmentation, pre_save_path, results_name, compression='gzip')
+
+    # Relabel with connected components
+    segmentation = vigra.analysis.labelVolume(segmentation)
+    # Merge small segments
+    segmentation = merge_small_segments(segmentation, 100)
+
+    # Store the final result
     vigra.writeHDF5(segmentation, save_path, results_name, compression = 'gzip')
 
 
@@ -211,3 +224,33 @@ def project_new_result(
 
     # Write the result
     vigra.writeHDF5(mc_seg, save_path, results_name, compression = 'gzip')
+
+
+def project_resolved_objects_to_segmentation(
+        meta_folder, ds_name,
+        mc_seg_filepath, mc_seg_key,
+        new_nodes_filepath,
+        save_path, results_name
+):
+
+    ds = load_dataset(meta_folder, ds_name)
+    seg_id = 0
+
+    mc_segmentation = vigra.readHDF5(mc_seg_filepath, mc_seg_key)
+
+    # Load resolving result
+    with open(new_nodes_filepath) as f:
+        resolved_objs = pickle.load(f)
+
+    rag = ds._rag(seg_id)
+    mc_labeling, _ = rag.projectBaseGraphGt( mc_segmentation )
+    new_label_offset = np.max(mc_labeling) + 1
+    for obj in resolved_objs:
+        resolved_nodes = resolved_objs[obj]
+        for node_id in resolved_nodes:
+            mc_labeling[node_id] = new_label_offset + resolved_nodes[node_id]
+        new_label_offset += np.max(resolved_nodes.values()) + 1
+    mc_segmentation = rag.projectLabelsToBaseGraph(mc_labeling)
+
+    # Write the result
+    vigra.writeHDF5(mc_segmentation, save_path, results_name, compression = 'gzip')

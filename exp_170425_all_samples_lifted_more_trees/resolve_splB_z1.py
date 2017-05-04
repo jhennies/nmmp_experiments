@@ -48,7 +48,8 @@ if __name__ == '__main__':
                                    'lifted_probs_to_energies_0_3_0.5_2.0.h5')
 
     # Global resolving -------------------
-    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global.pkl')
+    # TODO: Change here when adding result
+    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global_2.pkl')
 
     resolve_false_merges(
         test_name, meta_folder, test_paths_cache_folder, rf_cache_folder,
@@ -61,7 +62,8 @@ if __name__ == '__main__':
         global_resolve=True
     )
 
-    result_filepath = os.path.join(experiment_folder, 'result_resolved_global.h5')
+    # TODO: Change here when adding result
+    result_filepath = os.path.join(experiment_folder, 'result_resolved_global_2.h5')
 
     project_new_result(
         test_name, meta_folder,
@@ -70,7 +72,8 @@ if __name__ == '__main__':
     )
 
     # Local resolving ---------------------
-    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local.pkl')
+    # TODO: Change here when adding result
+    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local_2.pkl')
 
     resolve_false_merges(
         test_name, meta_folder, test_paths_cache_folder, rf_cache_folder,
@@ -83,7 +86,8 @@ if __name__ == '__main__':
         global_resolve=False
     )
 
-    result_filepath = os.path.join(experiment_folder, 'result_resolved_local.h5')
+    # TODO: Change here when adding result
+    result_filepath = os.path.join(experiment_folder, 'result_resolved_local_2.h5')
 
     project_resolved_objects_to_segmentation(
         meta_folder, test_name,

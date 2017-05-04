@@ -7,7 +7,7 @@ sys.path.append(
 
 from multicut_src import ExperimentSettings, load_dataset
 
-from pipeline import resolve_false_merges, project_new_result
+from pipeline import resolve_false_merges, project_new_result, project_resolved_objects_to_segmentation
 
 if __name__ == '__main__':
 
@@ -47,6 +47,7 @@ if __name__ == '__main__':
                                    'lifted_probs_to_energies_0_3_0.5_2.0.h5')
 
     # Global resolving -------------------
+    # TODO: Change here when adding result
     new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global.pkl')
 
     resolve_false_merges(
@@ -60,6 +61,7 @@ if __name__ == '__main__':
         global_resolve=True
     )
 
+    # TODO: Change here when adding result
     result_filepath = os.path.join(experiment_folder, 'result_resolved_global.h5')
 
     project_new_result(
@@ -69,6 +71,7 @@ if __name__ == '__main__':
     )
 
     # Local resolving ---------------------
+    # TODO: Change here when adding result
     new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local.pkl')
 
     resolve_false_merges(
@@ -82,10 +85,12 @@ if __name__ == '__main__':
         global_resolve=False
     )
 
+    # TODO: Change here when adding result
     result_filepath = os.path.join(experiment_folder, 'result_resolved_local.h5')
 
-    project_new_result(
-        test_name, meta_folder,
+    project_resolved_objects_to_segmentation(
+        meta_folder, test_name,
+        pre_seg_filepath, pre_seg_key,
         new_nodes_filepath,
         result_filepath, pre_seg_key
     )
