@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     # Global resolving -------------------
     # TODO: Change here when adding result
-    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global_2.pkl')
+    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_global_3.pkl')
 
     resolve_false_merges(
         test_name, meta_folder, test_paths_cache_folder, rf_cache_folder,
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     )
 
     # TODO: Change here when adding result
-    result_filepath = os.path.join(experiment_folder, 'result_resolved_global_2.h5')
+    result_filepath = os.path.join(experiment_folder, 'result_resolved_global_3.h5')
 
     project_new_result(
         test_name, meta_folder,
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     # Local resolving ---------------------
     # TODO: Change here when adding result
-    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local_2.pkl')
+    new_nodes_filepath = os.path.join(meta_folder, 'new_ones_local_3.pkl')
 
     resolve_false_merges(
         test_name, meta_folder, test_paths_cache_folder, rf_cache_folder,
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     )
 
     # TODO: Change here when adding result
-    result_filepath = os.path.join(experiment_folder, 'result_resolved_local_2.h5')
+    result_filepath = os.path.join(experiment_folder, 'result_resolved_local_3.h5')
 
     project_resolved_objects_to_segmentation(
         meta_folder, test_name,
