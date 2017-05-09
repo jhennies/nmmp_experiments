@@ -20,12 +20,12 @@ result_key = 'z/1/data'
 if __name__ == '__main__':
 
     # TODO Change here
-    from init_exp_splA_z1 import test_name, train_name
+    from init_exp_splA_z1 import test_name, train_names, train_folder
 
     ExperimentSettings().rf_cache_folder = rf_cache_folder
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().use_2d = False
-    ExperimentSettings().n_threads = 30
+    ExperimentSettings().n_threads = 12
     ExperimentSettings().n_trees = 500
     ExperimentSettings().solver = 'multicut_fusionmoves'
     ExperimentSettings().verbose = True
@@ -34,7 +34,8 @@ if __name__ == '__main__':
 
     run_lifted_mc(
         meta_folder,
-        train_name,
+        train_folder,
+        train_names,
         test_name,
         experiment_folder + 'result.h5',
         result_key,
