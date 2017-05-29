@@ -21,7 +21,7 @@ path_data_filepath = os.path.join(path_data_path, 'paths_ds_{}.h5'.format(test_n
 seg_file = os.path.join(experiment_folder, 'result.h5')
 seg_key = result_key
 # TODO Change here when switching scope
-resolved_file = os.path.join(experiment_folder, 'result_resolved_local.h5')
+resolved_file = os.path.join(experiment_folder, 'result_resolved_global.h5')
 resolved_key = result_key
 # TODO Change here when switching sample
 gt_file = os.path.join(source_folder, 'cremi.splC.train.raw_neurons_defect_correct.crop.axes_xyz.split_z.h5')
