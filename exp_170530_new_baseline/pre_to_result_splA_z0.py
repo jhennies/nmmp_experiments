@@ -3,11 +3,11 @@ import os
 
 import sys
 sys.path.append(
-    '/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+    '/home/jhennies/src/nature_methods_multicut_pipeline/nature_methods_multicut_pipeline/software/')
 
 from multicut_src import merge_small_segments
 
-project_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170530_new_baseline/'
+project_folder = '/media/hdb/jhennies/neuraldata/results/multicut_workflow/170530_new_baseline/'
 # TODO Change here
 experiment_folder = os.path.join(project_folder, 'splA_z0/')
 
