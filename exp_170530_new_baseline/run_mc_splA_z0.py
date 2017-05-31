@@ -32,30 +32,14 @@ if __name__ == '__main__':
     ExperimentSettings().weighting_scheme = 'z'
     ExperimentSettings().lifted_neighborhood = 3
 
-    # run_lifted_mc(
-    #     meta_folder,
-    #     train_folder,
-    #     train_names,
-    #     test_name,
-    #     experiment_folder + 'result.h5',
-    #     result_key,
-    #     pre_save_path=experiment_folder + 'pre_result.h5'
-    # )
+    run_lifted_mc(
+        meta_folder,
+        train_folder,
+        train_names,
+        test_name,
+        experiment_folder + 'result.h5',
+        result_key,
+        pre_save_path=experiment_folder + 'pre_result.h5'
+    )
 
-    # Save in case sth in the following function goes wrong
-    
-    import vigra
-    from multicut_src import merge_small_segments
-    segmentation = vigra.readHDF5(experiment_folder + 'pre_result.h5', result_key)
-    
-    print segmentation.shape
-    print segmentation.dtype
-    print type(segmentation)
 
-    # Relabel with connected components
-    segmentation = vigra.analysis.labelVolume(segmentation.astype('uint32'))
-    # Merge small segments
-    segmentation = merge_small_segments(segmentation, 100)
-
-    # Store the final result
-    vigra.writeHDF5(segmentation, save_path, results_name, compression = 'gzip')
