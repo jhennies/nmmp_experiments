@@ -1,5 +1,10 @@
 import vigra
 import os
+
+import sys
+sys.path.append(
+    '/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+
 from multicut_src import merge_small_segments
 
 project_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170530_new_baseline/'
