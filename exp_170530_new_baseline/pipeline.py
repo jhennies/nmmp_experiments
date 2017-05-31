@@ -117,7 +117,7 @@ def run_lifted_mc(
         vigra.writeHDF5(segmentation, pre_save_path, results_name, compression='gzip')
 
     # Relabel with connected components
-    segmentation = vigra.analysis.labelVolume(segmentation)
+    segmentation = vigra.analysis.labelVolume(segmentation.astype('uint32'))
     # Merge small segments
     segmentation = merge_small_segments(segmentation, 100)
 
