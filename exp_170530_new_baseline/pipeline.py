@@ -127,31 +127,21 @@ def run_lifted_mc(
 
 def find_false_merges(
         ds_test_name,
+        ds_train_names,
         meta_folder, rf_cache_folder,
-        test_paths_cache_folder, train_paths_cache_folder,
         test_seg_path, test_seg_key,
-        train_segs_paths, train_segs_keys,
-        train_raw_sources, train_raw_sources_keys,
-        train_probs_sources, train_probs_sources_keys,
-        train_gt_sources, train_gt_sources_keys,
-        ds_train_names
+        train_segs_paths, train_segs_keys
 ):
 
+    ds_train = [load_dataset(meta_folder, name) for name in ds_train_names if name != ds_test_name]
     ds_test = load_dataset(meta_folder, ds_test_name)
 
-    trainsets = []
-    for id_source, raw_source in enumerate(train_raw_sources):
-        trainsets.append(
-            DataSet(
-                meta_folder, 'ds_train_{}'.format(ds_train_names[id_source])
-            )
-        )
-        trainsets[-1].add_raw(raw_source, train_raw_sources_keys[id_source])
-        trainsets[-1].add_input(train_probs_sources[id_source], train_probs_sources_keys[id_source])
-        trainsets[-1].add_gt(train_gt_sources[id_source], train_gt_sources_keys[id_source])
+    # Path folders
+    test_paths_cache_folder = os.path.join(meta_folder, ds_test_name, 'path_data')
+    train_paths_cache_folder = os.path.join(meta_folder, 'train_path_data')
 
     _, false_merge_probs, _ = compute_false_merges(
-        trainsets, ds_test,
+        ds_train, ds_test,
         train_segs_paths, train_segs_keys,
         test_seg_path, test_seg_key,
         rf_cache_folder,
