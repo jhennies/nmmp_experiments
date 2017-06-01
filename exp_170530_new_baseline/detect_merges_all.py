@@ -35,6 +35,10 @@ if __name__ == '__main__':
         ['z/1/beta_0.5', 'z/1/beta_0.45', 'z/1/beta_0.55', 'z/1/beta_0.4', 'z/1/beta_0.6', 'z/1/beta_0.35', 'z/1/beta_0.65', 'z/1/beta_0.3', 'z/1/beta_0.7']
     ]
 
+    ExperimentSettings().anisotropy_factor = 10.
+    ExperimentSettings().n_threads = 30
+    ExperimentSettings().n_trees = 500
+
     for ds_id, ds_name in enumerate(ds_names):
 
         train_segs_paths = np.delete(all_train_segs, ds_id, axis=0).tolist()
