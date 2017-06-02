@@ -40,7 +40,7 @@ if __name__ == '__main__':
             meta_folder,
             ds_names,
             ds_name,
-            result_folder + 'result.h5',
+            os.path.join(result_folder, 'result.h5'),
             result_key,
-            pre_save_path=result_folder + 'pre_result.h5'
+            pre_save_path=os.path.join(result_folder, 'pre_result.h5')
         )

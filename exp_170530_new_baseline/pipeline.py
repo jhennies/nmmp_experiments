@@ -154,15 +154,26 @@ def find_false_merges(
 
 
 def resolve_false_merges(
-        ds_name, meta_folder, paths_cache_folder, rf_cache_folder,
+        ds_name, ds_names,
+        meta_folder, rf_cache_folder,
         new_nodes_filepath,
         pre_seg_filepath, pre_seg_key,
-        weight_filepath, lifted_filepath,
-        rf_cache_name,
         min_prob_thresh, max_prob_thresh,
         exclude_objs_with_larger_thresh,
         global_resolve=True
 ):
+
+    # Path folders
+    paths_cache_folder = os.path.join(meta_folder, ds_name, 'path_data')
+
+    # TODO Change here
+    weight_filepath = os.path.join(meta_folder, ds_name,
+                                   'probs_to_energies_0_z_16.0_0.5_rawprobreg.h5')
+    lifted_filepath = os.path.join(meta_folder, ds_name,
+                                   'lifted_probs_to_energies_0_3_0.5_2.0.h5')
+
+    ds_train = [load_dataset(meta_folder, name) for name in ds_names if name != ds_name]
+    rf_cache_name = 'rf_merges_%s' % '_'.join([ds.ds_name for ds in ds_train])
 
     ds = load_dataset(meta_folder, ds_name)
     seg_id = 0
