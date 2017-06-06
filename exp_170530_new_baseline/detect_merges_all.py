@@ -4,7 +4,7 @@ import numpy as np
 
 import sys
 sys.path.append(
-    '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+    '/home/jhennies/src/nature_methods_multicut_pipeline/nature_methods_multicut_pipeline/software/')
 
 from multicut_src import ExperimentSettings
 
