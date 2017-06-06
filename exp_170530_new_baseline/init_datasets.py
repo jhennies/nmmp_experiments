@@ -8,7 +8,7 @@ sys.path.append(
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
 source_folder = '/media/hdb/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
-project_folder = '/media/hdb/jhennies/neuraldata/results/multicut_workflow/170530_new_baseline/'
+project_folder = '/media/hdb/jhennies/neuraldata/results/multicut_workflow/170606_branch_nifty_backend/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
 result_keys = ['z/0/data', 'z/1/data'] * 3
