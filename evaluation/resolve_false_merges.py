@@ -1,5 +1,5 @@
 
-from multicut_src import MetaSet
+# from multicut_src import MetaSet
 from multicut_src import resolve_merges_with_lifted_edges
 from multicut_src import resolve_merges_with_lifted_edges_global
 from multicut_src import project_resolved_objects_to_segmentation
