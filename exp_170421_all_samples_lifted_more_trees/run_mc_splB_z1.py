@@ -47,7 +47,7 @@ if __name__ == '__main__':
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().use_2d = False
     ExperimentSettings().n_threads = 30
-    ExperimentSettings().ntrees = 500
+    ExperimentSettings().n_trees = 500
     ExperimentSettings().solver = 'multicut_fusionmoves'
     ExperimentSettings().verbose = True
     ExperimentSettings().weighting_scheme = 'z'

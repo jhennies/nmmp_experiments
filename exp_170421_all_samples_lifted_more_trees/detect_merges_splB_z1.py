@@ -36,7 +36,7 @@ def find_false_merges(
         trainsets[-1].add_input(train_probs_sources[id_source], train_probs_sources_keys[id_source])
         trainsets[-1].add_gt(train_gt_sources[id_source], train_gt_sources_keys[id_source])
 
-    compute_false_merges(
+    _, false_merge_probs, _ = compute_false_merges(
         trainsets, ds_test,
         train_segs_paths, train_segs_keys,
         test_seg_path, test_seg_key,
@@ -45,10 +45,19 @@ def find_false_merges(
         train_paths_cache_folder
     )
 
+    with open(os.path.join(test_paths_cache_folder, 'false_paths_predictions.pkl'), 'w') as f:
+        pickle.dump(false_merge_probs, f)
+
+
+from init_exp_splB_z1 import meta_folder, project_folder, source_folder, experiment_folder
+
+# Path folders
+test_paths_cache_folder = os.path.join(meta_folder, 'path_data')
+train_paths_cache_folder = os.path.join(project_folder, 'train_paths_cache')
+
 
 if __name__ == '__main__':
 
-    from init_exp_splB_z1 import meta_folder, project_folder, source_folder, experiment_folder
     from init_exp_splB_z1 import test_name, train_name
     from run_mc_splB_z1 import rf_cache_folder
 
@@ -122,10 +131,6 @@ if __name__ == '__main__':
     # The test segmentation
     test_seg = experiment_folder + 'result.h5'
     test_seg_key = 'z/1/data'
-
-    # Path folders
-    test_paths_cache_folder = os.path.join(meta_folder, 'path_data')
-    train_paths_cache_folder = os.path.join(project_folder, 'train_paths_cache')
 
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().n_threads = 30
