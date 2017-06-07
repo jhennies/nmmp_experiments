@@ -15,9 +15,9 @@ def run_roi_and_rand_general():
     # halves = [0, 1] * 4
     # defect_corrects = [False, False, True, True, True, True]
 
-    samples = ['B']
-    halves = [0]
-    defect_corrects = [True]
+    samples = ['B', 'B']
+    halves = [0, 1]
+    defect_corrects = [True, True]
 
     for idx, sample in enumerate(samples):
         half = halves[idx]

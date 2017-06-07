@@ -32,7 +32,7 @@ def roi_and_rand_general(
 
     if caching and os.path.isfile(cache_filepath):
         with open(cache_filepath, mode='r') as f:
-            return pickle.load(f)
+            voi_split, voi_merge, adapted_rand = pickle.load(f)
 
     else:
 
@@ -73,15 +73,15 @@ def roi_and_rand_general(
             voi_merge = 0.70
             adapted_rand = 0.23
 
-        print "\tvoi split   : " + str(voi_split)
-        print "\tvoi merge   : " + str(voi_merge)
-        print "\tadapted RAND: " + str(adapted_rand)
-
         if caching:
             with open(cache_filepath, mode='w') as f:
                 pickle.dump((voi_split, voi_merge, adapted_rand), f)
 
-        return (voi_split, voi_merge, adapted_rand)
+    print "\tvoi split   : " + str(voi_split)
+    print "\tvoi merge   : " + str(voi_merge)
+    print "\tadapted RAND: " + str(adapted_rand)
+
+    return (voi_split, voi_merge, adapted_rand)
 
 
 from evaluation import resolve_merges_error_rate_path_level
