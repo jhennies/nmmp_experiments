@@ -7,7 +7,7 @@ def run_roi_and_rand_general():
     # project_folder = '/media/julian/Daten/datasets/results/multicut_workflow/170530_new_baseline/'
     # result_file = 'result_resolved_local.h5'
     # result_files = ['result.h5', 'result_resolved_local.h5']
-    result_files = ['result.h5']
+    result_files = ['result.h5', 'result_resolved_local.h5']
     source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges/'
     # source_folder = '/media/julian/Daten/datasets/cremi_2016/170321_resolve_false_merges/'
 

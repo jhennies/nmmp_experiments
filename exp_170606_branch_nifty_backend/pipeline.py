@@ -283,6 +283,8 @@ def project_new_result(
     vigra.writeHDF5(mc_seg, save_path, results_name, compression = 'gzip')
 
 
+import nifty_with_cplex.graph.rag as nrag
+
 def project_resolved_objects_to_segmentation(
         meta_folder, ds_name,
         mc_seg_filepath, mc_seg_key,
@@ -299,15 +301,16 @@ def project_resolved_objects_to_segmentation(
     with open(new_nodes_filepath) as f:
         resolved_objs = pickle.load(f)
 
-    rag = ds._rag(seg_id)
-    mc_labeling, _ = rag.projectBaseGraphGt( mc_segmentation )
+    rag = ds.rag(seg_id)
+    mc_labeling = nrag.gridRagAccumulateLabels(rag, mc_segmentation)
     new_label_offset = np.max(mc_labeling) + 1
     for obj in resolved_objs:
         resolved_nodes = resolved_objs[obj]
         for node_id in resolved_nodes:
             mc_labeling[node_id] = new_label_offset + resolved_nodes[node_id]
         new_label_offset += np.max(resolved_nodes.values()) + 1
-    mc_segmentation = rag.projectLabelsToBaseGraph(mc_labeling)
+    mc_segmentation = nrag.projectScalarNodeDataToPixels(rag, mc_labeling, ExperimentSettings().n_threads)
+
 
     # Write the result
     vigra.writeHDF5(mc_segmentation, save_path, results_name, compression = 'gzip')
