@@ -148,7 +148,8 @@ def find_false_merges(
         ds_train_names,
         meta_folder,
         test_seg_path, test_seg_key,
-        train_segs_paths, train_segs_keys
+        train_segs_paths, train_segs_keys,
+        test_mc_weights, train_mc_weights
 ):
 
     ds_train = [load_dataset(meta_folder, name) for name in ds_train_names if name != ds_test_name]
@@ -158,10 +159,14 @@ def find_false_merges(
     test_paths_cache_folder = os.path.join(meta_folder, ds_test_name, 'path_data')
     train_paths_cache_folder = os.path.join(meta_folder, 'train_path_data')
 
+
+
     _, false_merge_probs, _ = compute_false_merges(
         ds_train, ds_test,
         train_segs_paths, train_segs_keys,
         test_seg_path, test_seg_key,
+        test_mc_weights,  # the precomputed mc-weights
+        train_mc_weights,
         test_paths_cache_folder,
         train_paths_cache_folder
     )
@@ -283,6 +288,8 @@ def project_new_result(
     vigra.writeHDF5(mc_seg, save_path, results_name, compression = 'gzip')
 
 
+import nifty_with_cplex.graph.rag as nrag
+
 def project_resolved_objects_to_segmentation(
         meta_folder, ds_name,
         mc_seg_filepath, mc_seg_key,
@@ -299,15 +306,16 @@ def project_resolved_objects_to_segmentation(
     with open(new_nodes_filepath) as f:
         resolved_objs = pickle.load(f)
 
-    rag = ds._rag(seg_id)
-    mc_labeling, _ = rag.projectBaseGraphGt( mc_segmentation )
+    rag = ds.rag(seg_id)
+    mc_labeling = nrag.gridRagAccumulateLabels(rag, mc_segmentation)
     new_label_offset = np.max(mc_labeling) + 1
     for obj in resolved_objs:
         resolved_nodes = resolved_objs[obj]
         for node_id in resolved_nodes:
             mc_labeling[node_id] = new_label_offset + resolved_nodes[node_id]
         new_label_offset += np.max(resolved_nodes.values()) + 1
-    mc_segmentation = rag.projectLabelsToBaseGraph(mc_labeling)
+    mc_segmentation = nrag.projectScalarNodeDataToPixels(rag, mc_labeling, ExperimentSettings().n_threads)
+
 
     # Write the result
     vigra.writeHDF5(mc_segmentation, save_path, results_name, compression = 'gzip')
