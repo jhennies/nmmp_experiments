@@ -1,6 +1,7 @@
 import os
 import cPickle as pickle
 import numpy as np
+import vigra
 
 import sys
 sys.path.append(
