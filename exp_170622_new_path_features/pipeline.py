@@ -149,6 +149,7 @@ def find_false_merges(
         meta_folder,
         test_seg_path, test_seg_key,
         train_segs_paths, train_segs_keys,
+        test_mc_weights, train_mc_weights
 ):
 
     ds_train = [load_dataset(meta_folder, name) for name in ds_train_names if name != ds_test_name]
@@ -158,18 +159,7 @@ def find_false_merges(
     test_paths_cache_folder = os.path.join(meta_folder, ds_test_name, 'path_data')
     train_paths_cache_folder = os.path.join(meta_folder, 'train_path_data')
 
-    test_weight_filepath = os.path.join(meta_folder, ds_test_name,
-                                   'probs_to_energies_0_z_16.0_0.5_rawprobreg.h5')
-    train_weight_filepaths = [
-        os.path.join(meta_folder, ds_train_name, 'probs_to_energies_0_z_16.0_0.5_rawprobreg.h5')
-        for ds_train_name in ds_train_names
-    ]
 
-    test_mc_weights = vigra.readHDF5(test_weight_filepath, "data")
-    train_mc_weights = [
-        vigra.readHDF5(train_weight_filepath, 'data')
-        for train_weight_filepath in train_weight_filepaths
-    ]
 
     _, false_merge_probs, _ = compute_false_merges(
         ds_train, ds_test,
