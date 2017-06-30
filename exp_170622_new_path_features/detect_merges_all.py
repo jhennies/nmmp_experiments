@@ -5,7 +5,7 @@ import vigra
 
 import sys
 sys.path.append(
-    '/home/jhennies/src/nature_methods_multicut_pipeline/nature_methods_multicut_pipeline/software/')
+    '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
 
 from multicut_src import ExperimentSettings
 
@@ -70,4 +70,3 @@ if __name__ == '__main__':
             train_segs_paths, train_segs_keys,
             test_mc_weights, train_mc_weights
         )
-
