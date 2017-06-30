@@ -3,12 +3,12 @@ import os
 
 import sys
 sys.path.append(
-    '/export/home/jhennies/src/nature_methods_multicut_pipeline/nature_methods_multicut_pipeline/software/')
+    '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
 
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
-source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped/'
-project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170606_test_new_path_features_cropped/'
+source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped_tiny/'
+project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170627_test_new_path_features_cropped_tiny/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
 experiment_ids = [0, 1, 2, 3, 4, 5]
