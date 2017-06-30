@@ -123,7 +123,7 @@ def eval_obj_measures(
 
     # Load stuff
     # source_folder = '/mnt/localdata02/jhennies/neuraldata/cremi_2016/170321_resolve_false_merges/'
-    source_folder = '/home/julian/ssh_data/neuraldata/cremi_2016/170321_resolve_false_merges/'
+    source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges/'
 
     gt_filepath = os.path.join(
         source_folder,
@@ -220,6 +220,16 @@ def eval_obj_measures_readable(
                 )
             )
 
+            # Like this we can find the erroneous and correct pairs with information on
+            #   the error type:
+            #   3: gt == True, rs == True -> correct merge
+            #   2: gt == True, rs == False -> false split
+            #   1: gt == False, rs == True -> false merge
+            #   0: gt == False, rs == False -> correct split
+            # The original performance with respect to merged obj is in gt_equal:
+            #   True -> correct merge
+            #   False -> false merge
+
             # Object count
             number_of_objs = len(errors_seg[thresh])
 
@@ -245,7 +255,7 @@ def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_ran
         defect_correct_str = ''
 
     # Load stuff
-    source_folder = '/home/julian/ssh_data/neuraldata/cremi_2016/170321_resolve_false_merges/'
+    source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges/'
     # TODO: Change here
     experiment_folder = os.path.join(
         project_folder, 'spl{}_z{}/'.format(sample, half)
