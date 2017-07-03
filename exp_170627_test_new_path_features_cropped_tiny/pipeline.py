@@ -148,8 +148,7 @@ def find_false_merges(
         ds_train_names,
         meta_folder,
         test_seg_path, test_seg_key,
-        train_segs_paths, train_segs_keys,
-        test_mc_weights, train_mc_weights
+        train_segs_paths, train_segs_keys
 ):
 
     ds_train = [load_dataset(meta_folder, name) for name in ds_train_names if name != ds_test_name]
@@ -163,8 +162,6 @@ def find_false_merges(
         ds_train, ds_test,
         train_segs_paths, train_segs_keys,
         test_seg_path, test_seg_key,
-        test_mc_weights,  # the precomputed mc-weights
-        train_mc_weights,
         test_paths_cache_folder,
         train_paths_cache_folder
     )
