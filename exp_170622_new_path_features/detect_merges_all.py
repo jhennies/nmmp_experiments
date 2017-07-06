@@ -37,36 +37,33 @@ if __name__ == '__main__':
     ]
 
 
-    weight_filepaths = [
-        os.path.join(meta_folder, ds_train_name, 'probs_to_energies_0_z_16.0_0.5_rawprobreg.h5')
-        for ds_train_name in ds_names
-    ]
-    mc_weights_all = [
-        vigra.readHDF5(train_weight_filepath, 'data')
-        for train_weight_filepath in weight_filepaths
-    ]
-
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().n_threads = 30
     ExperimentSettings().n_trees = 500
     ExperimentSettings().rf_cache_folder = rf_cache_folder
+    # ExperimentSettings().path_features = ['path_features',
+    #                                       'lengths',
+    #                                       'multicuts',
+    #                                       'cut_features']
+    ExperimentSettings().path_features = ['multicuts',
+                                          'cut_features']
+    ExperimentSettings().use_probs_map_for_cut_features = True
 
     for ds_id in experiment_ids:
         ds_name = ds_names[ds_id]
 
         train_segs_paths = np.delete(all_train_segs, ds_id, axis=0).tolist()
         train_segs_keys = np.delete(all_train_keys, ds_id, axis=0).tolist()
-        train_mc_weights = np.delete(mc_weights_all, ds_id, axis=0).tolist()
 
         test_seg_path = os.path.join(project_folder, ds_name, 'result.h5')
         test_seg_key = result_keys[ds_id]
-        test_mc_weights = mc_weights_all[ds_id]
+
+        # logger.info('Starting find_false_merges...')
 
         find_false_merges(
             ds_name,
             ds_names,
             meta_folder,
             test_seg_path, test_seg_key,
-            train_segs_paths, train_segs_keys,
-            test_mc_weights, train_mc_weights
+            train_segs_paths, train_segs_keys
         )

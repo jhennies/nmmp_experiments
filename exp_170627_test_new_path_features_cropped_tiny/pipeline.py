@@ -17,6 +17,9 @@ from multicut_src import RandomForest
 from multicut_src import ExperimentSettings
 from multicut_src import merge_small_segments
 
+import logging
+logger = logging.getLogger(__name__)
+
 def init_dataset(
         meta_folder, name,
         raw_filepath, raw_name,
@@ -157,6 +160,8 @@ def find_false_merges(
     # Path folders
     test_paths_cache_folder = os.path.join(meta_folder, ds_test_name, 'path_data')
     train_paths_cache_folder = os.path.join(meta_folder, 'train_path_data')
+
+    # logger.info('Starting compute_false_merges...')
 
     _, false_merge_probs, _ = compute_false_merges(
         ds_train, ds_test,
