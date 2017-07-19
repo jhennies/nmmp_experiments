@@ -188,11 +188,11 @@ if __name__ == '__main__':
 
     # run_plot_all_sample_path_eval_split_samples()
 
-    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170622_new_path_features/'
+    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170717_test_new_path_features_cropped_bkp_after_detect_merges_old_features/'
     thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    samples = ['A']
+    samples = ['B']
     halves = [0]
-    defect_corrects = [False]
+    defect_corrects = [True]
 
     from eval_all import all_sample_path_eval
     results_path, results_obj = all_sample_path_eval(
@@ -200,6 +200,6 @@ if __name__ == '__main__':
         measures=['f1', 'precision', 'recall']
     )
 
-    print 'F1 = {}'.format(results_path['f1'])
-    print 'Recall = {}'.format(results_path['recall'])
-    print 'Precision = {}'.format(results_path['precision'])
+    print 'F1 = {}'.format(results_obj['f1'])
+    print 'Recall = {}'.format(results_obj['recall'])
+    print 'Precision = {}'.format(results_obj['precision'])

@@ -7,6 +7,8 @@ import sys
 sys.path.append(
     '/export/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
 
+import logging
+
 from multicut_src import ExperimentSettings
 
 from pipeline import find_false_merges
@@ -17,6 +19,18 @@ if __name__ == '__main__':
 
     from init_datasets import ds_names
     from run_mc_all import rf_cache_folder
+
+    # logger = logging.getLogger(__name__)
+    # logger.setLevel(logging.INFO)
+    # handler = logging.FileHandler(os.path.join(project_folder, 'test.log'))
+    # handler.setLevel(logging.INFO)
+    # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # handler.setFormatter(formatter)
+    # logger.addHandler(handler)
+    # h_stream = logging.StreamHandler()
+    # h_stream.setLevel(logging.INFO)
+    # h_stream.setFormatter(formatter)
+    # logger.addHandler(h_stream)
 
     # Training segmentations
     all_train_segs = [
@@ -36,19 +50,17 @@ if __name__ == '__main__':
         ['z/1/beta_0.5', 'z/1/beta_0.45', 'z/1/beta_0.55', 'z/1/beta_0.4', 'z/1/beta_0.6', 'z/1/beta_0.35', 'z/1/beta_0.65', 'z/1/beta_0.3', 'z/1/beta_0.7']
     ]
 
-
     ExperimentSettings().anisotropy_factor = 10.
     ExperimentSettings().n_threads = 30
     ExperimentSettings().n_trees = 500
     ExperimentSettings().rf_cache_folder = rf_cache_folder
-    ExperimentSettings().verbose = True
-    ExperimentSettings().num_it = 3000  # default = 3000
-    ExperimentSettings().num_it_stop = 20  # default = 20
     # ExperimentSettings().path_features = ['path_features',
     #                                       'lengths',
     #                                       'multicuts',
     #                                       'cut_features']
-    ExperimentSettings().path_features = ['multicuts']
+    ExperimentSettings().path_features = ['path_features',
+                                          'lengths',
+                                          'cut_features']
     ExperimentSettings().use_probs_map_for_cut_features = True
 
     for ds_id in experiment_ids:
@@ -69,3 +81,4 @@ if __name__ == '__main__':
             test_seg_path, test_seg_key,
             train_segs_paths, train_segs_keys
         )
+

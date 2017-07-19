@@ -54,10 +54,12 @@ if __name__ == '__main__':
     ExperimentSettings().n_threads = 30
     ExperimentSettings().n_trees = 500
     ExperimentSettings().rf_cache_folder = rf_cache_folder
+    # ExperimentSettings().path_features = ['path_features',
+    #                                       'lengths',
+    #                                       'multicuts',
+    #                                       'cut_features']
     ExperimentSettings().path_features = ['path_features',
-                                          'lengths',
-                                          'multicuts',
-                                          'cut_features']
+                                          'lengths']
     ExperimentSettings().use_probs_map_for_cut_features = True
 
     for ds_id in experiment_ids:
