@@ -197,9 +197,11 @@ if __name__ == '__main__':
     from eval_all import all_sample_path_eval
     results_path, results_obj = all_sample_path_eval(
         project_folder, thresh_range, samples, halves, defect_corrects,
-        measures=['f1', 'precision', 'recall']
+        measures=['f1', 'precision', 'recall', 'accuracy'],
+        source_folder='/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped/'
     )
 
     print 'F1 = {}'.format(results_obj['f1'])
     print 'Recall = {}'.format(results_obj['recall'])
     print 'Precision = {}'.format(results_obj['precision'])
+    print 'Accuracy = {}'.format(results_obj['accuracy'])

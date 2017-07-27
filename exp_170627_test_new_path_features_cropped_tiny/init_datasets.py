@@ -7,7 +7,7 @@ sys.path.append(
 
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
-source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped_tiny2/'
+source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped_tiny/'
 project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170627_test_new_path_features_cropped_tiny/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']

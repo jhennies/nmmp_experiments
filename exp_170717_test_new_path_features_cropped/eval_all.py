@@ -242,7 +242,7 @@ def eval_obj_measures_readable(
     return result
 
 
-def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_range):
+def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_range, source_folder=None):
 
     from evaluation import compute_path_error_rates
 
@@ -255,7 +255,8 @@ def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_ran
         defect_correct_str = ''
 
     # Load stuff
-    source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped/'
+    if source_folder is None:
+        source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges_cropped/'
     # TODO: Change here
     experiment_folder = os.path.join(
         project_folder, 'spl{}_z{}/'.format(sample, half)
@@ -293,7 +294,8 @@ def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_ran
     return result_path, result_obj
 
 
-def all_sample_path_eval(project_folder, thresh_range, samples, halves, defect_corrects, measures=None):
+def all_sample_path_eval(project_folder, thresh_range, samples, halves, defect_corrects, measures=None,
+                         source_folder=None):
 
     if measures is None:
         measures = ['precision', 'recall', 'accuracy', 'f1']
@@ -306,7 +308,7 @@ def all_sample_path_eval(project_folder, thresh_range, samples, halves, defect_c
 
     for idx, sample in enumerate(samples):
         result_path, result_obj = path_eval_on_sample(sample, halves[idx], defect_corrects[idx], project_folder,
-                                                      thresh_range)
+                                                      thresh_range, source_folder=source_folder)
 
         sorted_keys = sorted(result_path.keys())
         for key in results_path.keys():
