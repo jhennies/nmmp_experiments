@@ -3,7 +3,7 @@ import os
 
 import sys
 sys.path.append(
-    '/home/jhennies/src/nature_methods_multicut_pipeline_devel/nature_methods_multicut_pipeline/software/')
+    '/home/jhennies/src/nature_methods_multicut_pipeline/nature_methods_multicut_pipeline/software/')
 
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
