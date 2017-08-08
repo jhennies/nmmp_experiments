@@ -11,8 +11,9 @@ source_folder = '/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_me
 project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170717_new_path_features/'
 
 ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
+# experiment_ids = [5]
 # experiment_ids = [2]
-experiment_ids = [0, 1, 3, 4, 5]
+experiment_ids = [0, 1, 2, 3, 4, 5]
 result_keys = ['z/0/data', 'z/1/data'] * 3
 
 meta_folder = os.path.join(project_folder, 'cache')
