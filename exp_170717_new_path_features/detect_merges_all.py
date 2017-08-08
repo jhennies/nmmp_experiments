@@ -57,13 +57,16 @@ if __name__ == '__main__':
     ExperimentSettings().path_features = ['path_features',
                                           'lengths',
                                           'multicuts',
-                                          'cut_features']
+                                          'cut_features',
+                                          'cut_features_whole_plane']
+    # ExperimentSettings().path_features = ['multicuts',
+    #                                       'cut_features',
+    #                                       'cut_features_whole_plane']
     # ExperimentSettings().path_features = ['lengths',
     #                                       'multicuts',
     #                                       'cut_features']
     # ExperimentSettings().path_features = ['path_features',
-    #                                       'lengths',
-    #                                       'cut_features']
+    #                                       'lengths']
     ExperimentSettings().use_probs_map_for_cut_features = True
 
     for ds_id in experiment_ids:
