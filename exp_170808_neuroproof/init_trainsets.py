@@ -7,13 +7,20 @@ sys.path.append(
 
 # The following locations should be importable by downstream scripts
 # TODO Change here when switching server
-source_folder = '/mnt/data/Neuro/neuroproof_data/'
-project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170727_neuroproof/'
+trainset_source_folder = '/mnt/data/Neuro/neuroproof_data/'
+project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170808_neuroproof/'
 
-ds_names = ['train_mc', 'train_path_classifier']
+# neuroproof_train is the 256 block used for training the multicuts
+#   On this one no multicut is computed -> just training
+# neuroproot_test is the 512 block used to train the path classifier
+#   All the different beta segmentations with conventional multicut are computed on this dataset
+trainset_names = ['neuroproof_train', 'neuroproof_test']
+
+# Select neuroproof_test for multicut computation
 experiment_ids = [1]
-# experiment_ids = [0, 1, 3, 4, 5]
-result_keys = ['data'] * 2
+
+# This has to have the same shape as ds_names but the first entry will never be read in this setting
+result_keys = ['', 'beta']
 
 meta_folder = os.path.join(project_folder, 'cache')
 
@@ -26,7 +33,7 @@ if __name__ == '__main__':
     if not os.path.exists(meta_folder):
         os.mkdir(meta_folder)
 
-    make_cutouts = [True, False]
+    make_cutouts = [False, False]
 
     raw_files = [
         'raw_train.h5',
@@ -51,10 +58,10 @@ if __name__ == '__main__':
 
     # Init train sets
     init_datasets(
-        meta_folder, ds_names,
-        source_folder, raw_files, raw_names,
-        source_folder, probs_files, probs_names,
-        source_folder, seg_files, seg_names,
-        source_folder, gt_files, gt_names,
+        meta_folder, trainset_names,
+        trainset_source_folder, raw_files, raw_names,
+        trainset_source_folder, probs_files, probs_names,
+        trainset_source_folder, seg_files, seg_names,
+        trainset_source_folder, gt_files, gt_names,
         make_cutouts=make_cutouts
     )

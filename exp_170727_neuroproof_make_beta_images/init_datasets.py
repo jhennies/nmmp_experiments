@@ -13,7 +13,7 @@ project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170727_neur
 ds_names = ['train_mc', 'train_path_classifier']
 experiment_ids = [1]
 # experiment_ids = [0, 1, 3, 4, 5]
-result_keys = ['data'] * 2
+result_keys = ['beta_{}'] * 2
 
 meta_folder = os.path.join(project_folder, 'cache')
 
