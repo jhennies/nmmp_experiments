@@ -16,6 +16,8 @@ def compute_path_error_rates(
     result_path = {}
 
     for thresh in thresh_range:
+
+        print 'THRESHOLD = {}'.format(thresh)
         # Get the predicted classes
         predicted = false_merge_probs >= thresh
 
@@ -55,6 +57,21 @@ def compute_path_error_rates(
 
         # TODO: Also evaluate path-wise?
         # EVALUATION: Object level
+
+        try:
+            ref_class, ref_class_counts = np.unique(reference, return_counts=True)
+            pred_class, pred_class_counts = np.unique(predicted, return_counts=True)
+            print '    Paths (predicted | truth):'
+            for cl_id, cl in enumerate(ref_class):
+                print '        {}: {} | {}'.format(cl, pred_class_counts[cl_id], ref_class_counts[cl_id])
+
+            ref_class_obj, ref_class_counts_obj = np.unique(reference_obj, return_counts=True)
+            pred_class_obj, pred_class_counts_obj = np.unique(predicted_obj, return_counts=True)
+            print '    Objects (predicted | truth):'
+            for cl_id, cl in enumerate(ref_class_obj):
+                print '        {}: {} | {}'.format(cl, pred_class_counts_obj[cl_id], ref_class_counts_obj[cl_id])
+        except:
+            pass
 
         result_obj[thresh] = new_eval(predicted_obj, reference_obj)
         result_path[thresh] = new_eval(predicted, reference)

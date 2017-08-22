@@ -54,14 +54,14 @@ if __name__ == '__main__':
     ExperimentSettings().n_threads = 30
     ExperimentSettings().n_trees = 500
     ExperimentSettings().rf_cache_folder = rf_cache_folder
-    ExperimentSettings().path_features = ['path_features',
-                                          'lengths',
-                                          'multicuts',
-                                          'cut_features',
-                                          'cut_features_whole_plane']
-    # ExperimentSettings().path_features = ['multicuts',
+    # ExperimentSettings().path_features = ['path_features',
+    #                                       'lengths',
+    #                                       'multicuts',
     #                                       'cut_features',
     #                                       'cut_features_whole_plane']
+    ExperimentSettings().path_features = ['multicuts',
+                                          'cut_features',
+                                          'cut_features_whole_plane']
     # ExperimentSettings().path_features = ['lengths',
     #                                       'multicuts',
     #                                       'cut_features']
