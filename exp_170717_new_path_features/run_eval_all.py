@@ -239,14 +239,17 @@ if __name__ == '__main__':
     thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     samples = ['A', 'A', 'B', 'B', 'C', 'C']
     halves = [0, 1] * 3
-    # samples = ['A', 'A', 'B']
+    # samples = ['A', 'A', 'B', 'B']
     defect_corrects = [False, False, True, True, True, True]
+
+    run_name = 'path_prediction_bkps/all_path_features/'
 
     from eval_all import all_sample_path_eval
     results_path, results_obj = all_sample_path_eval(
         project_folder, thresh_range, samples, halves, defect_corrects,
         measures=['f1', 'precision', 'recall', 'accuracy'],
-        source_folder='/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges/'
+        source_folder='/mnt/ssd/jhennies/neuraldata/cremi_2016/170606_resolve_false_merges/',
+        run_name=run_name
     )
 
     print 'F1 = {}'.format(results_obj['f1'])
