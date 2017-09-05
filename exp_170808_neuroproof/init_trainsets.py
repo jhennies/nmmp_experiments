@@ -17,7 +17,7 @@ project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170808_neur
 trainset_names = ['neuroproof_train', 'neuroproof_test']
 
 # Select neuroproof_test for multicut computation
-experiment_ids = [1]
+train_ids = [1]
 
 # This has to have the same shape as ds_names but the first entry will never be read in this setting
 result_keys = ['', 'beta']
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     if not os.path.exists(meta_folder):
         os.mkdir(meta_folder)
 
-    make_cutouts = [False, False]
+    make_cutouts = [True, False]
 
     raw_files = [
         'raw_train.h5',

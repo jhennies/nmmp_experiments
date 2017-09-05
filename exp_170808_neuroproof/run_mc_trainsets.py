@@ -18,7 +18,7 @@ betas = [0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7]
 if __name__ == '__main__':
 
     # TODO Change here
-    from init_trainsets import trainset_names, project_folder, result_keys, experiment_ids
+    from init_trainsets import trainset_names, project_folder, result_keys, train_ids
 
     ExperimentSettings().rf_cache_folder = rf_cache_folder
     ExperimentSettings().anisotropy_factor = 1.
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     ExperimentSettings().weighting_scheme = 'all'
     ExperimentSettings().lifted_neighborhood = 3
 
-    for ds_id in experiment_ids:
+    for ds_id in train_ids:
 
         for beta in betas:
 
