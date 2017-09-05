@@ -179,7 +179,7 @@ def run_plot_all_sample_path_eval_split_samples():
 
 
 if __name__ == '__main__':
-    # run_roi_and_rand_general()
+    run_roi_and_rand_general()
 
     run_path_eval_on_all_samples()
     # run_eval_obj_measures_readable()

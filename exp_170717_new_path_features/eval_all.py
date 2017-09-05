@@ -242,7 +242,7 @@ def eval_obj_measures_readable(
     return result
 
 
-def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_range, source_folder=None):
+def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_range, source_folder=None, run_name=''):
 
     from evaluation import compute_path_error_rates
 
@@ -280,7 +280,7 @@ def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_ran
     if paths.size:
         paths = np.array([path.reshape((len(path) / 3, 3)) for path in paths])
     paths_to_objs = vigra.readHDF5(path_data_filepath, 'paths_to_objs')
-    with open(os.path.join(path_data_path, 'false_paths_predictions.pkl')) as f:
+    with open(os.path.join(path_data_path, run_name, 'false_paths_predictions.pkl')) as f:
         false_merge_probs = pickle.load(f)
 
     print 'Number of paths = {}'.format(len(paths_to_objs))
@@ -295,7 +295,7 @@ def path_eval_on_sample(sample, half, defect_correct, project_folder, thresh_ran
 
 
 def all_sample_path_eval(project_folder, thresh_range, samples, halves, defect_corrects, measures=None,
-                         source_folder=None):
+                         source_folder=None, run_name=''):
 
     if measures is None:
         measures = ['precision', 'recall', 'accuracy', 'f1']
@@ -308,7 +308,8 @@ def all_sample_path_eval(project_folder, thresh_range, samples, halves, defect_c
 
     for idx, sample in enumerate(samples):
         result_path, result_obj = path_eval_on_sample(sample, halves[idx], defect_corrects[idx], project_folder,
-                                                      thresh_range, source_folder=source_folder)
+                                                      thresh_range, source_folder=source_folder,
+                                                      run_name=run_name)
 
         sorted_keys = sorted(result_path.keys())
         for key in results_path.keys():
