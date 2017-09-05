@@ -42,7 +42,8 @@ def split_data(filepath, datakey, target_filepath, section_shape):
                 vigra.writeHDF5(section_data, target_filepath, target_datakey, compression='gzip')
 
 
-def split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list):
+def split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list,
+                               relabel=False, normalize=False):
 
     section_shape = np.array(section_shape)
 
@@ -73,6 +74,23 @@ def split_data_selected_chunks(filepath, datakey, target_filepath, section_shape
                     ]
         section_data = f_in[datakey][section_s]
 
+        if relabel:
+            print 'Relabeling...'
+            section_data = vigra.analysis.relabelConsecutive(
+                section_data,
+                start_label=0, keep_zeros=False
+            )[0]
+
+        if normalize:
+            print 'Normalizing ...'
+            print 'Old min: {}'.format(section_data.min())
+            print 'Old max: {}'.format(section_data.max())
+            section_data = section_data - section_data.min()
+            section_data = section_data / float(section_data.max())
+            print 'New min: {}'.format(section_data.min())
+            print 'New max: {}'.format(section_data.max())
+            section_data = section_data.astype('float32')
+
         # Store the data section to a new file
         #    Generate datakey name
         target_datakey = '{}_{}_{}_{}'.format(datakey, x, y, z)
@@ -85,33 +103,41 @@ def split_data_selected_chunks(filepath, datakey, target_filepath, section_shape
 if __name__ == '__main__':
 
     # FIXME: Do this only for the ones I select!
+    # chunk_list = [
+    #     [8, 5, 6],
+    #     [8, 5, 7],
+    #     [13, 5, 5],
+    #     [13, 5, 6]
+    # ]
+
     chunk_list = [
+        [7, 5, 6],
+        [7, 5, 7],
         [8, 5, 6],
-        [8, 5, 7],
-        [13, 5, 5],
-        [13, 5, 6]
+        [8, 5, 7]
     ]
 
-    # # Raw
-    # filepath = '/net/hci-storage01/groupfolders/multbild/fib25_hdf5/fib25-raw.h5'
+    # Raw
+    filepath = '/net/hci-storage01/groupfolders/multbild/fib25_hdf5/fib25-raw.h5'
+    datakey = 'data'
+    target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_raw_chunks_selected.h5'
+    section_shape = (512, 512, 512)
+
+    split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list,
+                               normalize=True)
+
+    # # GT
+    # filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25-gt.h5'
     # datakey = 'data'
-    # target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_raw_chunks_selected.h5'
+    # target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_gt_chunks_selected.h5'
     # section_shape = (512, 512, 512)
     #
     # split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list)
-
-    # GT
-    filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25-gt.h5'
-    datakey = 'data'
-    target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_gt_chunks_selected.h5'
-    section_shape = (512, 512, 512)
-
-    split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list)
-
+    #
     # # Probs
-    # filepath = '/net/hci-storage01/groupfolders/multbild/fib25_hdf5/fib25-cantor-pmap.h5'
+    # filepath = '/net/hci-storage01/groupfolders/multbild/fib25_hdf5/fib25-membrane-predictions_squeezed.h5'
     # datakey = 'data'
-    # target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_cantor_pmap_chunks.h5'
+    # target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_membrane_predictions_chunks_selected.h5'
     # section_shape = (512, 512, 512)
     #
     # split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list)
@@ -119,7 +145,8 @@ if __name__ == '__main__':
     # # Superpixels
     # filepath = '/net/hci-storage01/groupfolders/multbild/fib25_hdf5/fib25-vanilla-watershed-relabeled.h5'
     # datakey = 'data'
-    # target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_vanilla_watershed_relabeled_chunks.h5'
+    # target_filepath = '/mnt/localdata1/jhennies/neuraldata/fib25/fib25_vanilla_watershed_relabeled_chunks_selected.h5'
     # section_shape = (512, 512, 512)
     #
-    # split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list)
+    # split_data_selected_chunks(filepath, datakey, target_filepath, section_shape, chunk_list,
+    #                            relabel=True)
