@@ -5,9 +5,6 @@ import os
 import re
 import numpy as np
 
-import matplotlib
-from matplotlib import pyplot as plt
-
 from multicut_src import load_dataset
 
 # import sys

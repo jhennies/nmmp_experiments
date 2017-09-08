@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     # run_plot_all_sample_path_eval_split_samples()
 
-    project_folder = '/export/home/jhennies/sshs/albi_alex_results/results_baseline_finished'
+    project_folder = '/media/hdb/amatskev/neuraldata/results_baseline_finished/'
     thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     ds_names = ['splA_z0', 'splA_z1', 'splB_z0', 'splB_z1', 'splC_z0', 'splC_z1']
 
