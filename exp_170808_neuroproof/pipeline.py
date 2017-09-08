@@ -188,7 +188,7 @@ def find_false_merges(
 
 
 def resolve_false_merges(
-        ds_name, ds_names,
+        ds_name, trainset_names,
         meta_folder, rf_cache_folder,
         new_nodes_filepath,
         pre_seg_filepath, pre_seg_key,
@@ -201,12 +201,14 @@ def resolve_false_merges(
     paths_cache_folder = os.path.join(meta_folder, ds_name, 'path_data')
 
     # TODO Change here
-    weight_filepath = os.path.join(meta_folder, ds_name,
-                                   'probs_to_energies_0_z_16.0_0.5_rawprobreg.h5')
+    weight_filepath = os.path.join(
+        meta_folder, ds_name,
+        'probs_to_energies_0_{}_16.0_0.5_rawprobreg.h5'.format(ExperimentSettings().weighting_scheme)
+    )
     lifted_filepath = os.path.join(meta_folder, ds_name,
                                    'lifted_probs_to_energies_0_3_0.5_2.0.h5')
 
-    ds_train = [load_dataset(meta_folder, name) for name in ds_names if name != ds_name]
+    ds_train = [load_dataset(meta_folder, name) for name in trainset_names if name != ds_name]
     rf_cache_name = 'rf_merges_%s' % '_'.join([ds.ds_name for ds in ds_train])
 
     ds = load_dataset(meta_folder, ds_name)

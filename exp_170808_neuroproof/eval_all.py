@@ -10,9 +10,9 @@ from matplotlib import pyplot as plt
 
 from multicut_src import load_dataset
 
-# import sys
-# sys.path.append('/home/jhennies/src/cremi_python/cremi_python')
-# from cremi import Volume, NeuronIds
+import sys
+sys.path.append('/home/jhennies/src/cremi_python/cremi_python')
+from cremi import Volume, NeuronIds
 
 
 def compute_path_error_rates(
@@ -161,6 +161,66 @@ def all_ds_path_eval(
             results_obj[key].append(np.array([result_obj[k][key] for k in sorted_keys])[:, None])
 
     return results_path, results_obj
+
+
+def roi_and_rand_general(
+        ds_name,
+        project_folder,
+        result_file,
+        result_key,
+        caching=False,
+        debug=False
+):
+    print '\nEvaluating {}'.format(ds_name)
+    print 'Result file: {}'.format(result_file)
+
+    experiment_folder = os.path.join(project_folder, ds_name)
+    meta_folder = os.path.join(project_folder, 'cache')
+
+    if caching:
+        cache_filepath = os.path.join(
+            experiment_folder,
+            re.sub('.h5$', '', result_file) + '_roi_and_rand_cache.pkl'
+        )
+    else:
+        cache_filepath = None
+
+    if caching and os.path.isfile(cache_filepath):
+        with open(cache_filepath, mode='r') as f:
+            voi_split, voi_merge, adapted_rand = pickle.load(f)
+
+    else:
+
+        # Load dataset
+        ds = load_dataset(meta_folder, ds_name)
+
+        if not debug:
+            gt = ds.gt()
+            vol_gt = Volume(gt)
+            neuron_ids_evaluation = NeuronIds(vol_gt)
+
+        mc_result_filepath = os.path.join(experiment_folder, result_file)
+
+        if not debug:
+            # Evaluate baseline
+            mc_result = vigra.readHDF5(mc_result_filepath, result_key)
+            vol_mc_result = Volume(mc_result)
+            (voi_split, voi_merge) = neuron_ids_evaluation.voi(vol_mc_result)
+            adapted_rand = neuron_ids_evaluation.adapted_rand(vol_mc_result)
+        else:
+            voi_split = 1.09
+            voi_merge = 0.70
+            adapted_rand = 0.23
+
+        if caching:
+            with open(cache_filepath, mode='w') as f:
+                pickle.dump((voi_split, voi_merge, adapted_rand), f)
+
+    print "\tvoi split   : " + str(voi_split)
+    print "\tvoi merge   : " + str(voi_merge)
+    print "\tadapted RAND: " + str(adapted_rand)
+
+    return voi_split, voi_merge, adapted_rand
 
 
 if __name__ == '__main__':
