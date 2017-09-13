@@ -57,12 +57,13 @@ def run_roi_and_rand_general():
     # project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170907_neuroproof_mc/'
     result_files = ['result.h5', 'result_betas.h5']
     # result_files = ['result.h5']
-    result_keys = ['beta_0.5', 'beta_0.5']
+    # result_keys = ['beta_0.5', 'beta_0.5']
     # result_keys = ['beta_0.5']
+    result_keys = ['data'] * len(result_files)
 
-    # ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
+    ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
     # ds_names = ['fib_8_5_6', 'fib_8_5_7']
-    ds_names = ['neuroproof_test']
+    # ds_names = ['neuroproof_test']
 
     for id_ds_name, ds_name in enumerate(ds_names):
         for id_result_file, result_file in enumerate(result_files):

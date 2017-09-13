@@ -169,7 +169,9 @@ def roi_and_rand_general(
         result_file,
         result_key,
         caching=False,
-        debug=False
+        debug=False,
+        gt=None,
+        compute_rand=True
 ):
     print '\nEvaluating {}'.format(ds_name)
     print 'Result file: {}'.format(result_file)
@@ -191,11 +193,19 @@ def roi_and_rand_general(
 
     else:
 
-        # Load dataset
-        ds = load_dataset(meta_folder, ds_name)
+        if gt is not None:
+            pass
+
+        else:
+            # Load dataset
+            ds = load_dataset(meta_folder, ds_name)
+
+            if not debug:
+                gt = ds.gt()
+
+        print 'gt.shape = {}'.format(gt.shape)
 
         if not debug:
-            gt = ds.gt()
             vol_gt = Volume(gt)
             neuron_ids_evaluation = NeuronIds(vol_gt)
 
@@ -204,21 +214,30 @@ def roi_and_rand_general(
         if not debug:
             # Evaluate baseline
             mc_result = vigra.readHDF5(mc_result_filepath, result_key)
+            print 'mc_result.shape = {}'.format(mc_result.shape)
             vol_mc_result = Volume(mc_result)
             (voi_split, voi_merge) = neuron_ids_evaluation.voi(vol_mc_result)
-            adapted_rand = neuron_ids_evaluation.adapted_rand(vol_mc_result)
+            if compute_rand:
+                adapted_rand = neuron_ids_evaluation.adapted_rand(vol_mc_result)
         else:
             voi_split = 1.09
             voi_merge = 0.70
-            adapted_rand = 0.23
+            if compute_rand:
+                adapted_rand = 0.23
 
         if caching:
             with open(cache_filepath, mode='w') as f:
-                pickle.dump((voi_split, voi_merge, adapted_rand), f)
+                if compute_rand:
+                    pickle.dump((voi_split, voi_merge, adapted_rand), f)
+                else:
+                    pickle.dump((voi_split, voi_merge), f)
 
     print "\tvoi split   : " + str(voi_split)
     print "\tvoi merge   : " + str(voi_merge)
-    print "\tadapted RAND: " + str(adapted_rand)
+    if compute_rand:
+        print "\tadapted RAND: " + str(adapted_rand)
+    else:
+        adapted_rand = 0
 
     return voi_split, voi_merge, adapted_rand
 

@@ -53,15 +53,19 @@ def run_roi_and_rand_general():
 
     from eval_all import roi_and_rand_general
 
-    project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170912_fib_mc_on_fib/'
-    # project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170907_neuroproof_mc/'
-    result_files = ['result.h5']
+    # project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170912_fib_mc_on_fib/'
+    project_folder = '/mnt/localdata1/jhennies/neuraldata/results/'
     # result_files = ['result.h5']
+    result_files = ['fib_7_5_7_neuroproof-fib25seg-med.h5']
     result_keys = ['data']
     # result_keys = ['beta_0.5']
 
-    ds_names = ['fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
+    ds_names = ['fib_mc_constantin']
+    # ds_names = ['fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
     # ds_names = ['fib_8_5_6', 'fib_8_5_7']
+
+    import vigra
+    gt = vigra.readHDF5('/mnt/localdata1/jhennies/neuraldata/results/fib_mc_constantin/fib_7_5_7_gt.h5', 'data')
 
     for id_ds_name, ds_name in enumerate(ds_names):
         for id_result_file, result_file in enumerate(result_files):
@@ -72,7 +76,9 @@ def run_roi_and_rand_general():
                 result_file,
                 result_key,
                 caching=True,
-                debug=False
+                debug=False,
+                gt=gt,
+                compute_rand=False
             )
 
 
