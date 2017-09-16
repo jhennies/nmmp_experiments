@@ -78,7 +78,7 @@ def run_roi_and_rand_general():
                 caching=True,
                 debug=False,
                 gt=gt,
-                compute_rand=False
+                compute_rand=True
             )
 
 

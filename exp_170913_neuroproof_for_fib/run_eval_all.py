@@ -53,23 +53,23 @@ def run_roi_and_rand_general():
 
     from eval_all import roi_and_rand_general
 
-    project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170808_neuroproof/'
+    project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170913_neuroproof_for_fib/'
     # project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170907_neuroproof_mc/'
-    result_files = ['result.h5', 'result_resolved_local.h5']
-    # result_files = ['result.h5']
+    # result_files = ['result.h5', 'result_resolved_local.h5']
+    result_files = ['result.h5']
     result_keys = ['data'] * len(result_files)
     # result_keys = ['beta_0.5']
 
-    ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
-    # ds_names = ['fib_8_5_6', 'fib_8_5_7']
+    # ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
+    ds_names = ['fib_8_5_7']
     # ds_names = ['neuroproof_test']
 
-    import vigra
-    gts = [vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_7_5_6'),
-           vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_7_5_7'),
-           vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_8_5_6'),
-           vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_8_5_7')]
-    print 'GTs loaded...'
+    # import vigra
+    # gts = [vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_7_5_6'),
+    #        vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_7_5_7'),
+    #        vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_8_5_6'),
+    #        vigra.readHDF5('/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunked_fib25/normalized/fib25_gt_chunks_selected.h5', 'data_8_5_7')]
+    # print 'GTs loaded...'
 
     for id_ds_name, ds_name in enumerate(ds_names):
         for id_result_file, result_file in enumerate(result_files):
@@ -81,7 +81,7 @@ def run_roi_and_rand_general():
                 result_key,
                 caching=True,
                 debug=False,
-                gt=gts[id_ds_name]
+                gt=None
             )
 
 
