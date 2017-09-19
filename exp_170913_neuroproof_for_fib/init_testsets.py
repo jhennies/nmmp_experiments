@@ -10,7 +10,7 @@ testset_source_folder = '/mnt/localdata0/jhennies/neuraldata/fib25/170809_chunke
 project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170913_neuroproof_for_fib/'
 
 testset_names = ['fib_8_5_6', 'fib_8_5_7', 'fib_7_5_6', 'fib_7_5_7']
-experiment_ids = [1]
+experiment_ids = [1, 2, 3]
 mc_trainset_names = ['neuroproof_train']
 path_trainset_names = ['neuroproof_test']
 

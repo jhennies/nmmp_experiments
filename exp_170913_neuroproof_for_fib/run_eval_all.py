@@ -55,13 +55,18 @@ def run_roi_and_rand_general():
 
     project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170913_neuroproof_for_fib/'
     # project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170907_neuroproof_mc/'
-    # result_files = ['result.h5', 'result_resolved_local.h5']
-    result_files = ['result.h5']
+    result_files = ['result.h5',
+                    'result_resolved_local.h5',
+                    'result_resolved_local_t0.4.h5',
+                    'result_resolved_local_t0.5.h5'
+                    ]
+    # result_files = ['result.h5']
     result_keys = ['data'] * len(result_files)
     # result_keys = ['beta_0.5']
 
     # ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
-    ds_names = ['fib_8_5_7']
+    ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_7']
+    # ds_names = ['fib_7_5_7', 'fib_8_5_7']
     # ds_names = ['neuroproof_test']
 
     # import vigra
@@ -86,9 +91,9 @@ def run_roi_and_rand_general():
 
 
 def run_path_eval_to_xlsx():
-    project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170808_neuroproof/'
+    project_folder = '/mnt/localdata0/jhennies/results/multicut_workflow/170913_neuroproof_for_fib/'
     thresh_range = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-    ds_names = ['fib_8_5_6', 'fib_8_5_7', 'fib_7_5_6']
+    ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_7']
 
     run_name = ''
 
@@ -121,6 +126,7 @@ def run_path_eval_to_xlsx():
 
 if __name__ == '__main__':
     run_roi_and_rand_general()
+    # run_path_eval_to_xlsx()
 
     # run_path_eval_on_all_samples()
     # run_eval_obj_measures_readable()
