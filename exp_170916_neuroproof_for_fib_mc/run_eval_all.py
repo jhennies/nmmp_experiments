@@ -61,6 +61,7 @@ def run_roi_and_rand_general():
     # result_keys = ['beta_0.5']
 
     ds_names = ['fib_7_5_6', 'fib_7_5_7', 'fib_8_5_6', 'fib_8_5_7']
+    # ds_names = ['fib_8_5_6', 'fib_8_5_7']
     # ds_names = ['fib_8_5_7']
     # ds_names = ['neuroproof_test']
 

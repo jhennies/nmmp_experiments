@@ -40,6 +40,13 @@ if __name__ == '__main__':
     check_ds_for_non_continuous_objects(meta_folder,
                                         ds_name,
                                         check_seg=True,
-                                        check_gt=False)
+                                        check_gt=True)
+
+    ds_name = 'fib_7_5_6'
+    meta_folder = '/mnt/ssd/jhennies/results/multicut_workflow/170916_neuroproof_for_fib_mc/cache/'
+    check_ds_for_non_continuous_objects(meta_folder,
+                                        ds_name,
+                                        check_seg=True,
+                                        check_gt=True)
 
 

@@ -32,6 +32,7 @@ if __name__ == '__main__':
     ExperimentSettings().weighting_scheme = 'all'
     ExperimentSettings().lifted_neighborhood = 3
     # ExperimentSettings().rf_batch_size = 500000
+    ExperimentSettings().beta_local = 0.5
 
     for ds_id in experiment_ids:
 
