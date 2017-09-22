@@ -10,7 +10,7 @@ testset_source_folder = '/mnt/localdata1/jhennies/neuraldata/fib25/overlap_50/'
 project_folder = '/mnt/localdata1/jhennies/neuraldata/results/multicut_workflow/170919_neuroproof_for_fib_overlap/'
 
 testset_names = ['fib_5_6_7', 'fib_5_6_8', 'fib_6_6_7', 'fib_6_6_8']
-experiment_ids = [0]
+experiment_ids = [0, 1, 2, 3]
 mc_trainset_names = ['neuroproof_train']
 path_trainset_names = ['neuroproof_test']
 
